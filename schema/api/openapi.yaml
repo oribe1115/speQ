@@ -1,0 +1,422 @@
+openapi: 3.1.0
+x-stoplight:
+  id: 24ikvo5dr7zfn
+info:
+  title: speQ
+  version: '1.0'
+servers:
+  - url: /api
+paths:
+  /users/me:
+    get:
+      summary: Get My Information
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+              examples: {}
+        '401':
+          description: traPIDが確認できません
+      operationId: getMe
+      description: 現在アクセスしているユーザーの情報を取得する
+    parameters: []
+  /users/root:
+    get:
+      summary: Get Root Users
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traPId'
+      operationId: getRootUsers
+      requestBody:
+        content: {}
+      description: rootユーザーを取得する
+  /users/admin:
+    get:
+      summary: Get Admin Users
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: g4znhpkef7kx3
+      operationId: getAdmins
+      description: adminユーザーを取得する
+  /users/contestant:
+    get:
+      summary: Get Contestant Users
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: fnffdtnqhymtv
+      operationId: getContestants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/traPId'
+                x-stoplight:
+                  id: n5zeko2c1hj3t
+            examples: {}
+      description: contestantユーザーを取得する
+  /info:
+    get:
+      summary: Get Contest Info
+      tags:
+        - contest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContestInfo'
+      operationId: getContestInfo
+      description: コンテスト情報を取得する
+  /vote:
+    get:
+      summary: Get Current Vote
+      tags:
+        - vote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traPId'
+      operationId: getVote
+      description: 現在のvote対象を取得する
+    parameters: []
+    post:
+      summary: Post New Vote
+      operationId: postVote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/traPId'
+              examples: {}
+      description: 新しいvote対象を登録する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/traPId'
+      tags:
+        - vote
+  /admin/users/admin:
+    put:
+      summary: Put Admin Users
+      operationId: putAdminUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: xg1l417tzyqov
+      tags:
+        - adminOnly
+      description: adminユーザー全体を更新する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/traPId'
+                x-stoplight:
+                  id: r50etwwn9bkzc
+  /admin/users/contestant:
+    put:
+      summary: Put Contestant Users
+      operationId: putContestants
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: 5zcuasouozbbc
+      description: contestantユーザ全体を更新する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/traPId'
+                x-stoplight:
+                  id: chocxtu87bivk
+      tags:
+        - adminOnly
+  /admin/info:
+    put:
+      summary: Put Contest Info
+      operationId: putContestInfo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContestInfo'
+      description: コンテスト情報全体を更新する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContestInfo'
+      tags:
+        - adminOnly
+  /admin/problems:
+    put:
+      summary: Put Problems
+      operationId: putProblems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProblemInfo'
+                  x-stoplight:
+                    id: um1mnv31t6zhr
+      tags:
+        - adminOnly
+      description: 問題情報全体を更新
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProblemInfo'
+                x-stoplight:
+                  id: ra8pavft7gshb
+  /admin/problems/solved:
+    post:
+      summary: Mark Problems as Solved
+      operationId: markProblemAsSolved
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemSolvedInfo'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProblemSolvedInfo'
+      description: 問題が解かれたことをマークする
+      tags:
+        - adminOnly
+    delete:
+      summary: Unmark Problem as Solved
+      operationId: unmarkProblemAsSolved
+      responses:
+        '200':
+          description: OK
+      description: 問題が解かれたというマークを解除する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProblemSolvedInfo'
+      tags:
+        - adminOnly
+  /admin/scores:
+    post:
+      summary: Post New Score
+      operationId: postScore
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreInfo'
+      description: 最新スコアを登録する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreInfo'
+      tags:
+        - adminOnly
+components:
+  schemas:
+    traPId:
+      title: traPId
+      x-stoplight:
+        id: sh7p9udyu69tj
+      type: string
+      example: traP
+      minLength: 1
+      maxLength: 32
+      examples:
+        - traP
+    ContestInfo:
+      title: ContestInfo
+      x-stoplight:
+        id: sv2hy3dt018af
+      type: object
+      examples: []
+      properties:
+        title:
+          type: string
+          x-stoplight:
+            id: rwkkhbv0ok84a
+        description:
+          type: string
+          x-stoplight:
+            id: qk41w6foka8xc
+        scheduled_start_time:
+          type: string
+          x-stoplight:
+            id: gnapxo2k3zhio
+          format: date-time
+        start_time:
+          type: string
+          x-stoplight:
+            id: xk5ud9ffry91f
+          format: date-time
+        end_time:
+          type: string
+          x-stoplight:
+            id: ei7sbzyh0729g
+          format: date-time
+        voting_freeze_time:
+          type: string
+          x-stoplight:
+            id: tpgxn3k5108ac
+          format: date-time
+    UserInfo:
+      title: UserInfo
+      x-stoplight:
+        id: 2ksphhos2n27n
+      type: object
+      properties:
+        traPId:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: bn9q69wfrnwet
+        isAdmin:
+          type: boolean
+          x-stoplight:
+            id: vcevzthfoiatz
+        isRoot:
+          type: boolean
+          x-stoplight:
+            id: pqucuv1esc88c
+      required:
+        - traPId
+        - isAdmin
+        - isRoot
+    ProblemInfo:
+      title: ProblemInfo
+      x-stoplight:
+        id: gij84uom7vj2h
+      type: object
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: 8osfshib0n063
+          description: 表示順の指定にも使用
+        title:
+          type: string
+          x-stoplight:
+            id: y5d3iw31zt8yv
+        description:
+          type: string
+          x-stoplight:
+            id: i6i2gzy3fexoe
+      required:
+        - id
+        - title
+    ProblemSolvedInfo:
+      title: ProblemSolvedInfo
+      x-stoplight:
+        id: xw854klyndi84
+      type: object
+      properties:
+        problemId:
+          type: integer
+          x-stoplight:
+            id: 7ap6t4rlv607g
+        contestantId:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: 25gcha5g916zw
+      required:
+        - problemId
+        - contestantId
+    ScoreInfo:
+      title: ScoreInfo
+      x-stoplight:
+        id: c24ljad76i1g5
+      type: object
+      properties:
+        contestantId:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: kf0gxi5al2ics
+        score:
+          type: number
+          x-stoplight:
+            id: zjjrvdm2jjk7z
+      required:
+        - contestantId
+        - score
+  responses: {}
+  requestBodies: {}
+x-internal: false
+tags:
+  - name: adminOnly
+  - name: contest
+  - name: user
+  - name: vote
