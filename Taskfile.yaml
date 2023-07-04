@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  mock-up:
+    desc: Run a mock server with Prism on a Docker container.
+    cmd: docker run --init --rm -v ./schema/api/openapi.yaml:/tmp/openapi.yaml -p 4010:4010 stoplight/prism:4.11.0 mock -h 0.0.0.0 "/tmp/openapi.yaml"
+    ignore_error: true
