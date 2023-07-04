@@ -1,16 +1,37 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
+import InternalFrame from '@/frames/InternalFrame.vue'
+import PublicFrame from '@/frames/PublicFrame.vue'
 import HomePage from '@/views/HomePage.vue'
+import VotePage from '@/views/VotePage.vue'
 
 export enum RouteName {
-  Home = 'home'
+  Home = 'home',
+  Vote = 'vote'
 }
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: RouteName.Home,
-    component: HomePage
+    component: PublicFrame,
+    children: [
+      {
+        path: '',
+        name: RouteName.Home,
+        component: HomePage
+      }
+    ]
+  },
+  {
+    path: '/vote',
+    component: InternalFrame,
+    children: [
+      {
+        path: '',
+        name: RouteName.Vote,
+        component: VotePage
+      }
+    ]
   }
 ]
 
