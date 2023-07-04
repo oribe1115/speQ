@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import apiClient from '../apis'
+import { RouteName } from '../router'
 import UserIcon from './UserIcon.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { UserInfo } from '@/apis/generated'
+
+const router = useRouter()
 
 const me = ref<UserInfo>()
 const drawer = ref(false)
@@ -30,14 +34,14 @@ apiClient.user.getMe().then((res) => (me.value = res))
   <!-- PC画面用 -->
   <v-navigation-drawer class="d-none d-sm-flex" v-model="pcDrawer">
     <v-list>
-      <v-list-item> test </v-list-item>
+      <v-list-item nav @click="router.push(RouteName.Vote)"> 投票する </v-list-item>
     </v-list>
   </v-navigation-drawer>
 
   <!-- スマホ画面用 -->
   <v-navigation-drawer class="d-flex d-lg-none" v-model="drawer" temporary>
     <v-list>
-      <v-list-item> test </v-list-item>
+      <v-list-item nav @click="router.push(RouteName.Vote)"> 投票する </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
