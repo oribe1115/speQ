@@ -1,4 +1,5 @@
-import { RouteRecordRaw, createWebHistory, createRouter } from 'vue-router'
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+
 import HomePage from '@/views/HomePage.vue'
 
 export enum RouteName {
