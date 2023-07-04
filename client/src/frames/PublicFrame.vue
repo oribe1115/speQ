@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseFrame from './BaseFrame.vue'
+</script>
 
 <template>
-  <div class="d-flex justify-center">
+  <base-frame>
     <router-view></router-view>
-  </div>
+  </base-frame>
 </template>
