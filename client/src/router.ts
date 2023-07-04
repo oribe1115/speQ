@@ -1,5 +1,6 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
+import PublicFrame from '@/frames/PublicFrame.vue'
 import HomePage from '@/views/HomePage.vue'
 
 export enum RouteName {
@@ -9,8 +10,14 @@ export enum RouteName {
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: RouteName.Home,
-    component: HomePage
+    component: PublicFrame,
+    children: [
+      {
+        path: '/',
+        name: RouteName.Home,
+        component: HomePage
+      }
+    ]
   }
 ]
 
