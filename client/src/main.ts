@@ -6,7 +6,6 @@ import 'vuetify/styles'
 
 import App from '@/App.vue'
 import router from '@/router'
-import '@/style.css'
 
 const vuetify = createVuetify({
   components,
