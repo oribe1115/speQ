@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import apiClient from '../apis'
 import { ref } from 'vue'
 
+import apiClient from '@/apis'
 import { ContestInfo } from '@/apis/generated'
 
 const contestInfo = ref<ContestInfo>()

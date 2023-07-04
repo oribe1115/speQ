@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import useMe from '../composables/users/useMe'
-import BaseFrame from './BaseFrame.vue'
+import useMe from '@/composables/users/useMe'
+import BaseFrame from '@/frames/BaseFrame.vue'
 
 const { isLogin } = useMe()
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseFrame from './BaseFrame.vue'
+import BaseFrame from '@/frames/BaseFrame.vue'
 </script>
 
 <template>
