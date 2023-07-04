@@ -13,7 +13,8 @@
     "openapi-gen": "openapi --input ../schema/api/openapi.yaml --output src/apis/generated --client fetch --name AppClient"
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vuetify": "^3.3.6"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.61.0",
