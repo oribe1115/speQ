@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import apiClient from '../apis'
+import { UserInfo } from '../apis/generated'
 import { RouteName } from '../router'
 import UserIcon from './UserIcon.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
-import { UserInfo } from '@/apis/generated'
 
 const router = useRouter()
 
