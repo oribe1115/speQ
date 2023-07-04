@@ -1,10 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppHeader from './components/AppHeader.vue'
+</script>
 
 <template>
   <v-app>
-    <v-app-bar>
-      <v-app-bar-title>speQ</v-app-bar-title>
-    </v-app-bar>
+    <AppHeader />
 
     <v-main>
       <RouterView />

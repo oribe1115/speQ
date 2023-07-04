@@ -11,7 +11,11 @@ const useMe = () => {
     return myInfo.value !== undefined
   }
 
-  return { isLogin }
+  const getId = () => {
+    return myInfo.value?.traPId ?? ''
+  }
+
+  return { isLogin, getId }
 }
 
 export default useMe
