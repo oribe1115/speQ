@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue'
+import { useMeStore } from '@/store/me'
+
+const { fetchMe } = useMeStore()
+
+fetchMe()
 </script>
 
 <template>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import useMe from '@/composables/users/useMe'
-import BaseFrame from '@/frames/BaseFrame.vue'
+import { storeToRefs } from 'pinia'
 
-const { isLogin } = useMe()
+import BaseFrame from '@/frames/BaseFrame.vue'
+import { useMeStore } from '@/store/me'
+
+const { isLogin } = storeToRefs(useMeStore())
 </script>
 
 <template>
   <base-frame>
-    <div v-if="isLogin()">
+    <div v-if="isLogin">
       <router-view></router-view>
     </div>
     <div v-else>

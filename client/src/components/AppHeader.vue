@@ -1,19 +1,17 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import apiClient from '@/apis'
-import { UserInfo } from '@/apis/generated'
 import UserIcon from '@/components/UserIcon.vue'
 import { RouteName } from '@/router'
+import { useMeStore } from '@/store/me'
 
 const router = useRouter()
 
-const me = ref<UserInfo>()
+const { isLogin, trapId } = storeToRefs(useMeStore())
 const drawer = ref(false)
 const pcDrawer = ref(true)
-
-apiClient.user.getMe().then((res) => (me.value = res))
 </script>
 
 <template>
@@ -24,9 +22,9 @@ apiClient.user.getMe().then((res) => (me.value = res))
     <v-app-bar-title>speQ</v-app-bar-title>
 
     <template v-slot:append>
-      <div v-if="me !== undefined">
-        <UserIcon :trap-id="me.traPId" />
-        {{ me.traPId }}
+      <div v-if="isLogin">
+        <UserIcon :trap-id="trapId" />
+        {{ trapId }}
       </div>
     </template>
   </v-app-bar>
