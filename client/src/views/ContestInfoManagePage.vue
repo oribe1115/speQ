@@ -7,11 +7,15 @@ import { ContestInfo } from '@/apis/generated'
 const contestInfo = ref<ContestInfo>({})
 const sampleDateText = '2023-04-01T14:15:22+09:00'
 
+const clickOnSave = () => {
+  apiClient.adminOnly.putContestInfo(contestInfo.value)
+}
+
 apiClient.contest.getContestInfo().then((res) => (contestInfo.value = res))
 </script>
 
 <template>
-  <v-card>
+  <v-card class="d-flex flex-column">
     <v-card-item>
       <v-card-title>イベント名</v-card-title>
       <v-card-text>
@@ -76,5 +80,9 @@ apiClient.contest.getContestInfo().then((res) => (contestInfo.value = res))
         ></v-text-field>
       </v-card-text>
     </v-card-item>
+
+    <v-card-actions class="align-self-center mb-4">
+      <v-btn @click="clickOnSave" class="align-self-center">Save</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
