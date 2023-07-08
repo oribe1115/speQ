@@ -71,5 +71,9 @@ apiClient.user.getContestants().then((res) => (contestants.value = res))
     <v-card-text>
       <UserIconOverlappedList :trap-ids="contestants" />
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn @click="router.push({ name: RouteName.ContestantManage })">編集</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
