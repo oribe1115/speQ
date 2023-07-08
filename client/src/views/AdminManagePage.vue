@@ -3,10 +3,13 @@ import { ref } from 'vue'
 
 import apiClient from '@/apis'
 import { traPId } from '@/apis/generated'
+import TrapIdListInputFrom from '@/components/TrapIdListInputFrom.vue'
 
 const rootUsers = ref<traPId[]>([])
+const adminUsers = ref<traPId[] | undefined>()
 
 apiClient.user.getRootUsers().then((res) => (rootUsers.value = [res]))
+apiClient.user.getAdmins().then((res) => (adminUsers.value = res))
 </script>
 
 <template>
@@ -21,6 +24,8 @@ apiClient.user.getRootUsers().then((res) => (rootUsers.value = [res]))
     <v-card-title> Admin </v-card-title>
 
     <v-card-subtitle>イベントに関する設定や情報更新ができます</v-card-subtitle>
-    <v-card-text> </v-card-text>
+    <v-card-text v-if="adminUsers">
+      <TrapIdListInputFrom :initial-list="adminUsers" />
+    </v-card-text>
   </v-card>
 </template>
