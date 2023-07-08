@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserIcon from './UserIcon.vue'
 import { ref } from 'vue'
 
 const props = defineProps<{
@@ -12,6 +13,7 @@ defineEmits(['update:trapId', 'delete'])
 
 <template>
   <div class="d-flex">
+    <UserIcon :trap-id="currentInput" />
     <v-text-field
       prefix="@"
       v-model="currentInput"
