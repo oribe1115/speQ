@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { watch } from 'vue'
 
 import { traPId } from '@/apis/generated'
 import TrapIdInputForm from '@/components/TrapIdInputForm.vue'
 
 const props = defineProps<{
   initialList: traPId[]
-  inputtedList: traPId[]
   submitFunc: (ids: traPId[]) => void
 }>()
 
-const emits = defineEmits(['update:inputtedList'])
-
 const trapIds = ref<traPId[]>([...props.initialList])
-emits('update:inputtedList', trapIds)
 
 const removeTrapId = (index: number) => {
   trapIds.value.splice(index, 1)
@@ -22,10 +17,6 @@ const removeTrapId = (index: number) => {
 const appendEmptyTrapId = () => {
   trapIds.value.push('')
 }
-
-watch(trapIds.value, () => {
-  emits('update:inputtedList', trapIds)
-})
 
 const clickOnSave = () => {
   props.submitFunc(trapIds.value)
