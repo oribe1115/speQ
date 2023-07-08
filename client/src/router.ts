@@ -10,7 +10,7 @@ import VotePage from '@/views/VotePage.vue'
 export enum RouteName {
   Home = 'home',
   Vote = 'vote',
-  AdminHome = 'admin-home'
+  AdminHome = 'admin'
 }
 
 const routes: RouteRecordRaw[] = [
