@@ -31,7 +31,11 @@ const adminLinks: ListItem[] = [
 
 <template>
   <v-list>
-    <v-list-item v-for="(item, i) in internalLinks" :key="i" @click="router.push(item.linkTo)">
+    <v-list-item
+      v-for="(item, i) in internalLinks"
+      :key="i"
+      @click="router.push({ name: item.linkTo })"
+    >
       {{ item.text }}
     </v-list-item>
   </v-list>
@@ -40,7 +44,11 @@ const adminLinks: ListItem[] = [
     <v-divider></v-divider>
     <v-list-subheader>Admin</v-list-subheader>
 
-    <v-list-item v-for="(item, i) in adminLinks" :key="i" @click="router.push(item.linkTo)">
+    <v-list-item
+      v-for="(item, i) in adminLinks"
+      :key="i"
+      @click="router.push({ name: item.linkTo })"
+    >
       {{ item.text }}
     </v-list-item>
   </v-list>
