@@ -7,12 +7,12 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="overlapped-list">
+  <div>
     <UserIcon
       v-for="(traPId, i) in props.trapIds"
       :key="i"
       :trap-id="traPId"
-      class="overlapped-item"
+      v-bind:class="i !== 0 ? 'overlapped-item' : ''"
     />
   </div>
 </template>
@@ -20,9 +20,5 @@ const props = defineProps<{
 <style>
 .overlapped-item {
   margin-left: -15px;
-}
-
-.overlapped-list:first-child {
-  margin-left: 0px;
 }
 </style>
