@@ -1,13 +1,16 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
+import AdminFrame from '@/frames/AdminFrame.vue'
 import InternalFrame from '@/frames/InternalFrame.vue'
 import PublicFrame from '@/frames/PublicFrame.vue'
+import AdminHomePage from '@/views/AdminHomePage.vue'
 import HomePage from '@/views/HomePage.vue'
 import VotePage from '@/views/VotePage.vue'
 
 export enum RouteName {
   Home = 'home',
-  Vote = 'vote'
+  Vote = 'vote',
+  AdminHome = 'admin-home'
 }
 
 const routes: RouteRecordRaw[] = [
@@ -30,6 +33,17 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: RouteName.Vote,
         component: VotePage
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: AdminFrame,
+    children: [
+      {
+        path: '',
+        name: RouteName.AdminHome,
+        component: AdminHomePage
       }
     ]
   }
