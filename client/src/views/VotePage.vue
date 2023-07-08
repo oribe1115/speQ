@@ -4,6 +4,7 @@ import { ref } from 'vue'
 
 import apiClient from '@/apis'
 import { traPId } from '@/apis/generated'
+import UserIcon from '@/components/UserIcon.vue'
 import UserSelector from '@/components/UserSelector.vue'
 import { useContestantsStore } from '@/store/contestants'
 
@@ -31,10 +32,17 @@ fetchContestants()
 </script>
 
 <template>
-  <p>vote page</p>
-  <p>現在の一位予想</p>
-  <p>{{ currentTargetContestant }}</p>
-  <UserSelector :items="contestants" @selected="selected" />
+  <v-card width="100%">
+    <template v-slot:title> 現在の一位予想 </template>
 
+    <v-card-text v-if="currentTargetContestant !== ''">
+      <UserIcon :trap-id="currentTargetContestant" />
+      {{ currentTargetContestant }}
+    </v-card-text>
+
+    <v-card-text v-else> 未設定 </v-card-text>
+  </v-card>
+
+  <UserSelector :items="contestants" @selected="selected" />
   <v-btn :onclick="submitTargetContestant" :disabled="newTargetContestant === ''">Submit</v-btn>
 </template>
