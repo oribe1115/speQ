@@ -10,17 +10,17 @@ import { useContestantsStore } from '@/store/contestants'
 const { fetchContestants } = useContestantsStore()
 const { contestants } = storeToRefs(useContestantsStore())
 
-const targetContestant = ref<traPId>('')
+const newTargetContestant = ref<traPId>('')
 
 const selected = (value: traPId) => {
-  targetContestant.value = value
+  newTargetContestant.value = value
 }
 const submitTargetContestant = () => {
-  if (targetContestant.value === '') {
+  if (newTargetContestant.value === '') {
     return
   }
 
-  apiClient.vote.postVote(targetContestant.value).then()
+  apiClient.vote.postVote(newTargetContestant.value).then()
 }
 
 fetchContestants()
@@ -30,5 +30,5 @@ fetchContestants()
   <p>vote page</p>
   <UserSelector :items="contestants" @selected="selected" />
 
-  <v-btn :onclick="submitTargetContestant" :disabled="targetContestant === ''">Submit</v-btn>
+  <v-btn :onclick="submitTargetContestant" :disabled="newTargetContestant === ''">Submit</v-btn>
 </template>
