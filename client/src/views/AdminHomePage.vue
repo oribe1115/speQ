@@ -63,6 +63,10 @@ apiClient.user.getContestants().then((res) => (contestants.value = res))
         <div class="ml-4">{{ item.value ?? '未設定' }}</div>
       </div>
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn @click="router.push({ name: RouteName.ContestInfoManage })">編集</v-btn>
+    </v-card-actions>
   </v-card>
 
   <v-card class="mt-8">
