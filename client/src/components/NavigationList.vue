@@ -25,6 +25,10 @@ const adminLinks: ListItem[] = [
   {
     text: 'top',
     linkTo: RouteName.AdminHome
+  },
+  {
+    text: 'adminユーザー管理',
+    linkTo: RouteName.AdminManage
   }
 ]
 </script>

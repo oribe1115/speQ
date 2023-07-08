@@ -4,13 +4,15 @@ import AdminFrame from '@/frames/AdminFrame.vue'
 import InternalFrame from '@/frames/InternalFrame.vue'
 import PublicFrame from '@/frames/PublicFrame.vue'
 import AdminHomePage from '@/views/AdminHomePage.vue'
+import AdminManagePage from '@/views/AdminManagePage.vue'
 import HomePage from '@/views/HomePage.vue'
 import VotePage from '@/views/VotePage.vue'
 
 export enum RouteName {
   Home = 'home',
   Vote = 'vote',
-  AdminHome = 'admin'
+  AdminHome = 'admin',
+  AdminManage = 'admin-manage'
 }
 
 const routes: RouteRecordRaw[] = [
@@ -44,6 +46,11 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: RouteName.AdminHome,
         component: AdminHomePage
+      },
+      {
+        path: 'users/admin',
+        name: RouteName.AdminManage,
+        component: AdminManagePage
       }
     ]
   }

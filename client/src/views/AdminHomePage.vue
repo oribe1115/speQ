@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import apiClient from '@/apis'
 import { ContestInfo, traPId } from '@/apis/generated'
 import UserIconOverlappedList from '@/components/UserIconOverlappedList.vue'
+import { RouteName } from '@/router'
 
 type ContestInfoItem = {
   key: string
   value: string | undefined
 }
+
+const router = useRouter()
 
 const rootUsers = ref<traPId[]>([])
 const adminUsers = ref<traPId[]>([])
@@ -44,6 +48,10 @@ apiClient.user.getContestants().then((res) => (contestants.value = res))
       Admin:
       <UserIconOverlappedList :trap-ids="adminUsers" />
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn @click="router.push({ name: RouteName.AdminManage })">編集</v-btn>
+    </v-card-actions>
   </v-card>
 
   <v-card class="mt-8">
