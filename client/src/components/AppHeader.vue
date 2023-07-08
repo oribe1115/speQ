@@ -1,13 +1,10 @@
 <script setup lang="ts">
+import NavigationList from './NavigationList.vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 import UserIcon from '@/components/UserIcon.vue'
-import { RouteName } from '@/router'
 import { useMeStore } from '@/store/me'
-
-const router = useRouter()
 
 const { isLogin, trapId } = storeToRefs(useMeStore())
 const drawer = ref(false)
@@ -31,15 +28,11 @@ const pcDrawer = ref(true)
 
   <!-- PC画面用 -->
   <v-navigation-drawer class="d-none d-sm-flex" v-model="pcDrawer">
-    <v-list>
-      <v-list-item nav @click="router.push(RouteName.Vote)"> 投票する </v-list-item>
-    </v-list>
+    <NavigationList />
   </v-navigation-drawer>
 
   <!-- スマホ画面用 -->
   <v-navigation-drawer class="d-flex d-lg-none" v-model="drawer" temporary>
-    <v-list>
-      <v-list-item nav @click="router.push(RouteName.Vote)"> 投票する </v-list-item>
-    </v-list>
+    <NavigationList />
   </v-navigation-drawer>
 </template>
