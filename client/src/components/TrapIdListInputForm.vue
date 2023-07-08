@@ -8,6 +8,7 @@ import TrapIdInputForm from '@/components/TrapIdInputForm.vue'
 const props = defineProps<{
   initialList: traPId[]
   inputtedList: traPId[]
+  submitFunc: (ids: traPId[]) => void
 }>()
 
 const emits = defineEmits(['update:inputtedList'])
@@ -25,6 +26,10 @@ const appendEmptyTrapId = () => {
 watch(trapIds.value, () => {
   emits('update:inputtedList', trapIds)
 })
+
+const clickOnSave = () => {
+  props.submitFunc(trapIds.value)
+}
 </script>
 
 <template>
@@ -35,5 +40,7 @@ watch(trapIds.value, () => {
       </v-list-item>
     </v-list>
     <v-btn icon="mdi-plus" class="align-self-center" :onclick="appendEmptyTrapId"></v-btn>
+
+    <v-btn @click="clickOnSave">Save</v-btn>
   </div>
 </template>
