@@ -16,14 +16,12 @@ apiClient.user.getAdmins().then((res) => (adminUsers.value = res))
   <v-card>
     <v-card-title> 管理者 </v-card-title>
 
-    <v-cart-text>
+    <v-card-text>
       Root:
       <UserIconOverlappedList :trap-ids="rootUsers" />
-    </v-cart-text>
 
-    <v-cart-text>
       Admin:
       <UserIconOverlappedList :trap-ids="adminUsers" />
-    </v-cart-text>
+    </v-card-text>
   </v-card>
 </template>
