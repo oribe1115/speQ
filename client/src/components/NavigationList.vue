@@ -37,6 +37,10 @@ const adminLinks: ListItem[] = [
   {
     text: 'イベント情報管理',
     linkTo: RouteName.ContestInfoManage
+  },
+  {
+    text: '問題情報管理',
+    linkTo: RouteName.ProblemMange
   }
 ]
 </script>
