@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/labstack/echo/v4/middleware"
@@ -25,8 +26,14 @@ func main() {
 	}
 
 	queries := model.New(db)
-	services := service.NewService(queries)
+	services := service.NewService(db, queries)
 	routerInstance := router.NewRouter(queries, services)
+
+	ctx := context.Background()
+	err = services.RegisterRootUsers(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	e := echo.New()
 	e.Use(middleware.Logger())

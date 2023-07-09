@@ -27,6 +27,7 @@ services:
       DB_HOSTNAME: mariadb
       DB_PORT: 3306
       DB_DATABASE: speq
+      ROOT_USER: traP
 
   mariadb:
     image: mariadb:10.7.3

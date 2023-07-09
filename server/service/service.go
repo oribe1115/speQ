@@ -1,11 +1,15 @@
 package service
 
-import "speQ/generated/model"
+import (
+	"database/sql"
+	"speQ/generated/model"
+)
 
 type Services struct {
+	db      *sql.DB
 	queries *model.Queries
 }
 
-func NewService(queries *model.Queries) *Services {
-	return &Services{queries: queries}
+func NewService(db *sql.DB, queries *model.Queries) *Services {
+	return &Services{db: db, queries: queries}
 }

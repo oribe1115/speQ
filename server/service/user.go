@@ -3,6 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
+	"golang.org/x/exp/slog"
+	"os"
+	"strings"
 )
 
 func (s *Services) IsRoot(ctx context.Context, traPID string) (bool, error) {
@@ -21,4 +24,43 @@ func (s *Services) IsAdmin(ctx context.Context, traPID string) (bool, error) {
 	}
 
 	return adminRowCount > 0, nil
+}
+
+func (s *Services) RegisterRootUsers(ctx context.Context) error {
+	err := s.queries.DeleteAllRootUsers(ctx)
+	if err != nil {
+		return err
+	}
+	slog.Info("dropped existing root users")
+
+	rootUsersStr := os.Getenv("ROOT_USER")
+	if rootUsersStr == "" {
+		slog.Warn("ROOT_USER is empty")
+		return nil
+	}
+
+	rootUsers := strings.Split(rootUsersStr, ",")
+
+	tx, err := s.db.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to start transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	txQueries := s.queries.WithTx(tx)
+	for _, traPID := range rootUsers {
+		err = txQueries.InsertRootUser(ctx, traPID)
+		if err != nil {
+			return fmt.Errorf("failed to registar `%s`: %v", traPID, err)
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	slog.Info(fmt.Sprintf("registered root users: %v", rootUsers))
+
+	return nil
 }
