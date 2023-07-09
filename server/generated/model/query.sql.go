@@ -66,6 +66,33 @@ func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
 	return err
 }
 
+const getAdminUsers = `-- name: GetAdminUsers :many
+SELECT trap_id FROM ` + "`" + `admins` + "`" + `
+`
+
+func (q *Queries) GetAdminUsers(ctx context.Context) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getAdminUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var trap_id string
+		if err := rows.Scan(&trap_id); err != nil {
+			return nil, err
+		}
+		items = append(items, trap_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getContestInfo = `-- name: GetContestInfo :one
 SELECT title, description, scheduled_start_time, start_time, end_time, voting_freeze_time
 FROM ` + "`" + `contest_info` + "`" + `
@@ -84,6 +111,33 @@ func (q *Queries) GetContestInfo(ctx context.Context) (ContestInfo, error) {
 		&i.VotingFreezeTime,
 	)
 	return i, err
+}
+
+const getRootUsers = `-- name: GetRootUsers :many
+SELECT trap_id FROM ` + "`" + `roots` + "`" + `
+`
+
+func (q *Queries) GetRootUsers(ctx context.Context) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getRootUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var trap_id string
+		if err := rows.Scan(&trap_id); err != nil {
+			return nil, err
+		}
+		items = append(items, trap_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const insertAdminUser = `-- name: InsertAdminUser :exec

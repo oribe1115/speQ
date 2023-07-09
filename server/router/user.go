@@ -2,6 +2,7 @@ package router
 
 import (
 	"context"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/exp/slog"
 	"net/http"
@@ -42,13 +43,36 @@ func (r *Router) PutAdminUsers(c echo.Context) error {
 }
 
 func (r *Router) GetAdmins(c echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	_, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	adminUsers, err := r.queries.GetAdminUsers(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to get root users: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.JSON(http.StatusOK, adminUsers)
 }
 
 func (r *Router) GetRootUsers(c echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	_, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	rootUsers, err := r.queries.GetRootUsers(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to get root users: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	// TODO: Fix openpai schema
+	return c.JSON(http.StatusOK, rootUsers[0])
 }
 
 func (r *Router) PutContestants(c echo.Context) error {

@@ -10,6 +10,9 @@ SELECT COUNT(*)
 FROM `roots`
 WHERE `trap_id` = ?;
 
+-- name: GetRootUsers :many
+SELECT * FROM `roots`;
+
 -- name: InsertAdminUser :exec
 INSERT INTO `admins` (`trap_id`)
 VALUES (?);
@@ -18,6 +21,9 @@ VALUES (?);
 SELECT COUNT(*)
 FROM `admins`
 WHERE `trap_id` = ?;
+
+-- name: GetAdminUsers :many
+SELECT * FROM `admins`;
 
 -- name: CountContestInfoRow :one
 SELECT COUNT(*)
