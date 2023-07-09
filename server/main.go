@@ -36,7 +36,6 @@ func main() {
 		Loc:                  jst,
 		AllowNativePasswords: true,
 	}
-	fmt.Println(dbConfig.FormatDSN())
 	db, err := sql.Open("mysql", dbConfig.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
