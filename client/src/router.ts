@@ -8,6 +8,7 @@ import AdminManagePage from '@/views/AdminManagePage.vue'
 import ContestInfoManagePage from '@/views/ContestInfoManagePage.vue'
 import ContestantManagePage from '@/views/ContestantManagePage.vue'
 import HomePage from '@/views/HomePage.vue'
+import ProblemManagePage from '@/views/ProblemManagePage.vue'
 import VotePage from '@/views/VotePage.vue'
 
 export enum RouteName {
@@ -16,7 +17,8 @@ export enum RouteName {
   AdminHome = 'admin',
   AdminManage = 'admin-manage',
   ContestantManage = 'contestant-manage',
-  ContestInfoManage = 'contest-info-manage'
+  ContestInfoManage = 'contest-info-manage',
+  ProblemMange = 'problems-manage'
 }
 
 const routes: RouteRecordRaw[] = [
@@ -65,6 +67,11 @@ const routes: RouteRecordRaw[] = [
         path: 'contest',
         name: RouteName.ContestInfoManage,
         component: ContestInfoManagePage
+      },
+      {
+        path: 'problems',
+        name: RouteName.ProblemMange,
+        component: ProblemManagePage
       }
     ]
   }
