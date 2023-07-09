@@ -9,3 +9,15 @@ tasks:
     desc: Run a dev environment with docker compose.
     cmd: docker compose -f dockerfiles/dev/compose.yml up --build
     ignore_error: true
+  dev-down:
+    desc: Remove a dev environment with docker compose.
+    cmd: docker compose -f dockerfiles/dev/compose.yml down
+    ignore_error: true
+  openapi-codegen:
+    desc: Generate codes from openapi.yaml
+    cmds:
+      - cd client && npm run openapi-gen
+      - oapi-codegen -package api schema/api/openapi.yaml > server/generated/api/server.gen.go
+  sqlc-gen:
+    desc: Generate Go codes with sqlc.
+    cmd: cd server && sqlc generate
