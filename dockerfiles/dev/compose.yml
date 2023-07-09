@@ -14,5 +14,11 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - "../../server:/github.com/oribe1115/server/speQ"
+      - ../../server:/github.com/oribe1115/server/speQ
     command: air -c /github.com/oribe1115/server/speQ/.air.toml
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ../../config/prometheus/dev-prometheus.conf:/etc/prometheus/prometheus.yml:ro
