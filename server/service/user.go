@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"golang.org/x/exp/slog"
 	"os"
+	"speQ/service/metrics"
 	"strings"
 )
 
@@ -127,6 +128,8 @@ func (s *Services) RegisterContestants(ctx context.Context, traPIDs []string) ([
 	if err != nil {
 		return nil, err
 	}
+
+	metrics.ClearVoteCount(newContestants)
 
 	return newContestants, nil
 }

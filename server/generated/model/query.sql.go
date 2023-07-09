@@ -162,6 +162,26 @@ func (q *Queries) GetContestants(ctx context.Context) ([]string, error) {
 	return items, nil
 }
 
+const getLastVote = `-- name: GetLastVote :one
+SELECT id, voter, target, created_at
+FROM ` + "`" + `votes` + "`" + `
+WHERE ` + "`" + `voter` + "`" + ` = ?
+ORDER BY ` + "`" + `created_at` + "`" + ` DESC
+LIMIT 1
+`
+
+func (q *Queries) GetLastVote(ctx context.Context, voter string) (Vote, error) {
+	row := q.db.QueryRowContext(ctx, getLastVote, voter)
+	var i Vote
+	err := row.Scan(
+		&i.ID,
+		&i.Voter,
+		&i.Target,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getRootUsers = `-- name: GetRootUsers :many
 SELECT trap_id
 FROM ` + "`" + `roots` + "`" + `
@@ -246,5 +266,20 @@ VALUES (?)
 
 func (q *Queries) InsertRootUser(ctx context.Context, trapID string) error {
 	_, err := q.db.ExecContext(ctx, insertRootUser, trapID)
+	return err
+}
+
+const insertVote = `-- name: InsertVote :exec
+INSERT INTO ` + "`" + `votes` + "`" + ` (` + "`" + `voter` + "`" + `, ` + "`" + `target` + "`" + `)
+VALUES (?, ?)
+`
+
+type InsertVoteParams struct {
+	Voter  string
+	Target string
+}
+
+func (q *Queries) InsertVote(ctx context.Context, arg InsertVoteParams) error {
+	_, err := q.db.ExecContext(ctx, insertVote, arg.Voter, arg.Target)
 	return err
 }

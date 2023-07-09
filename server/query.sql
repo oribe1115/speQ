@@ -60,3 +60,14 @@ WHERE TRUE;
 -- name: InsertContestant :exec
 INSERT INTO `contestants`(`trap_id`)
 VALUES (?);
+
+-- name: GetLastVote :one
+SELECT *
+FROM `votes`
+WHERE `voter` = ?
+ORDER BY `created_at` DESC
+LIMIT 1;
+
+-- name: InsertVote :exec
+INSERT INTO `votes` (`voter`, `target`)
+VALUES (?, ?);
