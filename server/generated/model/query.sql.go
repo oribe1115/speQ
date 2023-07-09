@@ -9,6 +9,17 @@ import (
 	"context"
 )
 
+const countContestInfoRow = `-- name: CountContestInfoRow :one
+SELECT COUNT(*) FROM ` + "`" + `contest_info` + "`" + `
+`
+
+func (q *Queries) CountContestInfoRow(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countContestInfoRow)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const countRowAsAdmin = `-- name: CountRowAsAdmin :one
 SELECT COUNT(*)
 FROM ` + "`" + `admins` + "`" + `
@@ -42,6 +53,24 @@ TRUNCATE ` + "`" + `roots` + "`" + `
 func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
 	_, err := q.db.ExecContext(ctx, deleteAllRootUsers)
 	return err
+}
+
+const getContestInfo = `-- name: GetContestInfo :one
+SELECT title, description, scheduled_start_time, start_time, end_time, voting_freeze_time FROM ` + "`" + `contest_info` + "`" + ` LIMIT 1
+`
+
+func (q *Queries) GetContestInfo(ctx context.Context) (ContestInfo, error) {
+	row := q.db.QueryRowContext(ctx, getContestInfo)
+	var i ContestInfo
+	err := row.Scan(
+		&i.Title,
+		&i.Description,
+		&i.ScheduledStartTime,
+		&i.StartTime,
+		&i.EndTime,
+		&i.VotingFreezeTime,
+	)
+	return i, err
 }
 
 const insertAdminUser = `-- name: InsertAdminUser :exec

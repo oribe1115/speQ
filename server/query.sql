@@ -18,3 +18,12 @@ VALUES (?);
 SELECT COUNT(*)
 FROM `admins`
 WHERE `trap_id` = ?;
+
+-- name: CountContestInfoRow :one
+SELECT COUNT(*)
+FROM `contest_info`;
+
+-- name: GetContestInfo :one
+SELECT *
+FROM `contest_info`
+LIMIT 1;
