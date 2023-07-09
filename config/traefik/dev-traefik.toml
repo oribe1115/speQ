@@ -9,3 +9,14 @@
 [entryPoints]
   [entryPoints.web]
     address = ":80"
+
+[http]
+  [http.routers]
+    [http.routers.test-router]
+      rule = "Host(`whoami.localhost`) && Path(`/test`)"
+      service = "test-service"
+
+  [http.services]
+    [http.services.test-service.loadBalancer]
+      [[http.services.test-service.loadBalancer.servers]]
+        url = "https://google.com"
