@@ -14,3 +14,6 @@ tasks:
     cmds:
       - cd client && npm run openapi-gen
       - oapi-codegen -package api schema/api/openapi.yaml > server/api/server.gen.go
+  sqlc-gen:
+    desc: Generate Go codes with sqlc.
+    cmd: cd server && sqlc generate
