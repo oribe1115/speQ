@@ -16,7 +16,15 @@ services:
       traefik.enable: true
       traefik.http.routers.dashboard.entrypoints: web
       traefik.http.routers.dashboard.service: api@internal
+    networks:
+      - traefik-network
   whoami:
     image: traefik/whoami:v1.9
     labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      traefik.enable: true
+      traefik.http.routers.whoami.entrypoints: web
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
