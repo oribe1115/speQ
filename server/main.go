@@ -9,6 +9,7 @@ import (
 	"speQ/generated/api"
 	"speQ/generated/model"
 	"speQ/router"
+	"speQ/service"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
@@ -24,7 +25,8 @@ func main() {
 	}
 
 	queries := model.New(db)
-	routerInstance := router.NewRouter(queries)
+	services := service.NewService(queries)
+	routerInstance := router.NewRouter(queries, services)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
