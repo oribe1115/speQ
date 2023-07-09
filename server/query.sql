@@ -11,7 +11,8 @@ FROM `roots`
 WHERE `trap_id` = ?;
 
 -- name: GetRootUsers :many
-SELECT * FROM `roots`;
+SELECT *
+FROM `roots`;
 
 -- name: InsertAdminUser :exec
 INSERT INTO `admins` (`trap_id`)
@@ -26,7 +27,8 @@ FROM `admins`
 WHERE `trap_id` = ?;
 
 -- name: GetAdminUsers :many
-SELECT * FROM `admins`;
+SELECT *
+FROM `admins`;
 
 -- name: CountContestInfoRow :one
 SELECT COUNT(*)
@@ -44,3 +46,17 @@ VALUES (?, ?, ?, ?, ?, ?);
 
 -- name: DeleteAllContestInfo :exec
 TRUNCATE `contest_info`;
+
+-- name: GetContestants :many
+SELECT *
+FROM `contestants`;
+
+-- name: DeleteAllContestants :exec
+DELETE
+FROM `contestants`
+WHERE TRUE;
+# TRUNCATE is forbidden since it's referenced with foreign keys
+
+-- name: InsertContestant :exec
+INSERT INTO `contestants`(`trap_id`)
+VALUES (?);

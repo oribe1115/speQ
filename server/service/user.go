@@ -97,3 +97,36 @@ func (s *Services) RegisterAdminUsers(ctx context.Context, traPIDs []string) ([]
 
 	return newAdmins, nil
 }
+
+func (s *Services) RegisterContestants(ctx context.Context, traPIDs []string) ([]string, error) {
+	tx, err := s.db.Begin()
+	if err != nil {
+		return nil, fmt.Errorf("failed to start transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	txQueries := s.queries.WithTx(tx)
+	err = txQueries.DeleteAllContestants(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, traPID := range traPIDs {
+		err = txQueries.InsertContestant(ctx, traPID)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	newContestants, err := txQueries.GetContestants(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+
+	return newContestants, nil
+}

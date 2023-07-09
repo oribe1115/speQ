@@ -30,7 +30,7 @@ CREATE TABLE `votes`
     `voter`      VARCHAR(32) NOT NULL,
     `target`     VARCHAR(32) NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY `vote_contestant` (`target`) REFERENCES `contestants` (`trap_id`)
+    FOREIGN KEY `vote_contestant` (`target`) REFERENCES `contestants` (`trap_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `problems`
@@ -46,8 +46,8 @@ CREATE TABLE `solved`
     `contestant_id` VARCHAR(32),
     `created_at`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`problem_id`, `contestant_id`),
-    FOREIGN KEY `solved_problem` (`problem_id`) REFERENCES `problems` (`id`),
-    FOREIGN KEY `solved_contestant` (`contestant_id`) REFERENCES `contestants` (`trap_id`)
+    FOREIGN KEY `solved_problem` (`problem_id`) REFERENCES `problems` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY `solved_contestant` (`contestant_id`) REFERENCES `contestants` (`trap_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `scores`
@@ -56,5 +56,5 @@ CREATE TABLE `scores`
     `contestant_id` VARCHAR(32) NOT NULL,
     `score`         DOUBLE      NOT NULL,
     `created_at`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY `score_contestant` (`contestant_id`) REFERENCES `contestants` (`trap_id`)
+    FOREIGN KEY `score_contestant` (`contestant_id`) REFERENCES `contestants` (`trap_id`) ON DELETE CASCADE
 );

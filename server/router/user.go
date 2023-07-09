@@ -93,11 +93,39 @@ func (r *Router) GetRootUsers(c echo.Context) error {
 }
 
 func (r *Router) PutContestants(c echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	_, httpErr := r.requireRootOrAdmin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	req := api.PutContestantsJSONRequestBody{}
+	err := c.Bind(&req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	ctx := context.Background()
+	newContestants, err := r.services.RegisterContestants(ctx, req)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to update contestants: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.JSON(http.StatusOK, newContestants)
 }
 
 func (r *Router) GetContestants(c echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	_, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	contestants, err := r.queries.GetContestants(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("falied to get contestants: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.JSON(http.StatusOK, contestants)
 }

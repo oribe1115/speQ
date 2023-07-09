@@ -66,6 +66,17 @@ func (q *Queries) DeleteAllContestInfo(ctx context.Context) error {
 	return err
 }
 
+const deleteAllContestants = `-- name: DeleteAllContestants :exec
+DELETE
+FROM ` + "`" + `contestants` + "`" + `
+WHERE TRUE
+`
+
+func (q *Queries) DeleteAllContestants(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllContestants)
+	return err
+}
+
 const deleteAllRootUsers = `-- name: DeleteAllRootUsers :exec
 TRUNCATE ` + "`" + `roots` + "`" + `
 `
@@ -76,7 +87,8 @@ func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
 }
 
 const getAdminUsers = `-- name: GetAdminUsers :many
-SELECT trap_id FROM ` + "`" + `admins` + "`" + `
+SELECT trap_id
+FROM ` + "`" + `admins` + "`" + `
 `
 
 func (q *Queries) GetAdminUsers(ctx context.Context) ([]string, error) {
@@ -122,8 +134,37 @@ func (q *Queries) GetContestInfo(ctx context.Context) (ContestInfo, error) {
 	return i, err
 }
 
+const getContestants = `-- name: GetContestants :many
+SELECT trap_id
+FROM ` + "`" + `contestants` + "`" + `
+`
+
+func (q *Queries) GetContestants(ctx context.Context) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getContestants)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var trap_id string
+		if err := rows.Scan(&trap_id); err != nil {
+			return nil, err
+		}
+		items = append(items, trap_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getRootUsers = `-- name: GetRootUsers :many
-SELECT trap_id FROM ` + "`" + `roots` + "`" + `
+SELECT trap_id
+FROM ` + "`" + `roots` + "`" + `
 `
 
 func (q *Queries) GetRootUsers(ctx context.Context) ([]string, error) {
@@ -183,6 +224,18 @@ func (q *Queries) InsertContestInfo(ctx context.Context, arg InsertContestInfoPa
 		arg.EndTime,
 		arg.VotingFreezeTime,
 	)
+	return err
+}
+
+const insertContestant = `-- name: InsertContestant :exec
+# TRUNCATE is forbidden since it's referenced with foreign keys
+
+INSERT INTO ` + "`" + `contestants` + "`" + `(` + "`" + `trap_id` + "`" + `)
+VALUES (?)
+`
+
+func (q *Queries) InsertContestant(ctx context.Context, trapID string) error {
+	_, err := q.db.ExecContext(ctx, insertContestant, trapID)
 	return err
 }
 
