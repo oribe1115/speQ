@@ -7,17 +7,59 @@ package model
 
 import (
 	"context"
-	"database/sql"
 )
 
-const insertRootUser = `-- name: InsertRootUser :execresult
-INSERT INTO ` + "`" + `roots` + "`" + ` (
-    ` + "`" + `trap_id` + "`" + `
-) VALUES (
-    ?
-)
+const countRowAsAdmin = `-- name: CountRowAsAdmin :one
+SELECT COUNT(*)
+FROM ` + "`" + `admins` + "`" + `
+WHERE ` + "`" + `trap_id` + "`" + ` = ?
 `
 
-func (q *Queries) InsertRootUser(ctx context.Context, trapID string) (sql.Result, error) {
-	return q.db.ExecContext(ctx, insertRootUser, trapID)
+func (q *Queries) CountRowAsAdmin(ctx context.Context, trapID string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countRowAsAdmin, trapID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const countRowAsRoot = `-- name: CountRowAsRoot :one
+SELECT COUNT(*)
+FROM ` + "`" + `roots` + "`" + `
+WHERE ` + "`" + `trap_id` + "`" + ` = ?
+`
+
+func (q *Queries) CountRowAsRoot(ctx context.Context, trapID string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countRowAsRoot, trapID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const deleteAllRootUsers = `-- name: DeleteAllRootUsers :exec
+TRUNCATE ` + "`" + `roots` + "`" + `
+`
+
+func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllRootUsers)
+	return err
+}
+
+const insertAdminUser = `-- name: InsertAdminUser :exec
+INSERT INTO ` + "`" + `admins` + "`" + ` (` + "`" + `trap_id` + "`" + `)
+VALUES (?)
+`
+
+func (q *Queries) InsertAdminUser(ctx context.Context, trapID string) error {
+	_, err := q.db.ExecContext(ctx, insertAdminUser, trapID)
+	return err
+}
+
+const insertRootUser = `-- name: InsertRootUser :exec
+INSERT INTO ` + "`" + `roots` + "`" + ` (` + "`" + `trap_id` + "`" + `)
+VALUES (?)
+`
+
+func (q *Queries) InsertRootUser(ctx context.Context, trapID string) error {
+	_, err := q.db.ExecContext(ctx, insertRootUser, trapID)
+	return err
 }

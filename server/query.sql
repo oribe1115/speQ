@@ -1,6 +1,20 @@
--- name: InsertRootUser :execresult
-INSERT INTO `roots` (
-    `trap_id`
-) VALUES (
-    ?
-);
+-- name: InsertRootUser :exec
+INSERT INTO `roots` (`trap_id`)
+VALUES (?);
+
+-- name: DeleteAllRootUsers :exec
+TRUNCATE `roots`;
+
+-- name: CountRowAsRoot :one
+SELECT COUNT(*)
+FROM `roots`
+WHERE `trap_id` = ?;
+
+-- name: InsertAdminUser :exec
+INSERT INTO `admins` (`trap_id`)
+VALUES (?);
+
+-- name: CountRowAsAdmin :one
+SELECT COUNT(*)
+FROM `admins`
+WHERE `trap_id` = ?;
