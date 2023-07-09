@@ -16,15 +16,9 @@ services:
       traefik.enable: true
       traefik.http.routers.dashboard.entrypoints: web
       traefik.http.routers.dashboard.service: api@internal
-    networks:
-      - traefik-network
   whoami:
     image: traefik/whoami:v1.9
     labels:
       traefik.enable: true
+      traefik.http.routers.whoami.rule: Host(`whoami.localhost`)
       traefik.http.routers.whoami.entrypoints: web
-    networks:
-      - traefik-network
-
-networks:
-  traefik-network:
