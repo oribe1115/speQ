@@ -27,3 +27,11 @@ FROM `contest_info`;
 SELECT *
 FROM `contest_info`
 LIMIT 1;
+
+-- name: InsertContestInfo :exec
+INSERT INTO `contest_info`
+(`title`, `description`, `scheduled_start_time`, `start_time`, `end_time`, `voting_freeze_time`)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- name: DeleteAllContestInfo :exec
+TRUNCATE `contest_info`;

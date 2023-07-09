@@ -7,10 +7,12 @@ package model
 
 import (
 	"context"
+	"database/sql"
 )
 
 const countContestInfoRow = `-- name: CountContestInfoRow :one
-SELECT COUNT(*) FROM ` + "`" + `contest_info` + "`" + `
+SELECT COUNT(*)
+FROM ` + "`" + `contest_info` + "`" + `
 `
 
 func (q *Queries) CountContestInfoRow(ctx context.Context) (int64, error) {
@@ -46,6 +48,15 @@ func (q *Queries) CountRowAsRoot(ctx context.Context, trapID string) (int64, err
 	return count, err
 }
 
+const deleteAllContestInfo = `-- name: DeleteAllContestInfo :exec
+TRUNCATE ` + "`" + `contest_info` + "`" + `
+`
+
+func (q *Queries) DeleteAllContestInfo(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllContestInfo)
+	return err
+}
+
 const deleteAllRootUsers = `-- name: DeleteAllRootUsers :exec
 TRUNCATE ` + "`" + `roots` + "`" + `
 `
@@ -56,7 +67,9 @@ func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
 }
 
 const getContestInfo = `-- name: GetContestInfo :one
-SELECT title, description, scheduled_start_time, start_time, end_time, voting_freeze_time FROM ` + "`" + `contest_info` + "`" + ` LIMIT 1
+SELECT title, description, scheduled_start_time, start_time, end_time, voting_freeze_time
+FROM ` + "`" + `contest_info` + "`" + `
+LIMIT 1
 `
 
 func (q *Queries) GetContestInfo(ctx context.Context) (ContestInfo, error) {
@@ -80,6 +93,33 @@ VALUES (?)
 
 func (q *Queries) InsertAdminUser(ctx context.Context, trapID string) error {
 	_, err := q.db.ExecContext(ctx, insertAdminUser, trapID)
+	return err
+}
+
+const insertContestInfo = `-- name: InsertContestInfo :exec
+INSERT INTO ` + "`" + `contest_info` + "`" + `
+(` + "`" + `title` + "`" + `, ` + "`" + `description` + "`" + `, ` + "`" + `scheduled_start_time` + "`" + `, ` + "`" + `start_time` + "`" + `, ` + "`" + `end_time` + "`" + `, ` + "`" + `voting_freeze_time` + "`" + `)
+VALUES (?, ?, ?, ?, ?, ?)
+`
+
+type InsertContestInfoParams struct {
+	Title              string
+	Description        sql.NullString
+	ScheduledStartTime sql.NullTime
+	StartTime          sql.NullTime
+	EndTime            sql.NullTime
+	VotingFreezeTime   sql.NullTime
+}
+
+func (q *Queries) InsertContestInfo(ctx context.Context, arg InsertContestInfoParams) error {
+	_, err := q.db.ExecContext(ctx, insertContestInfo,
+		arg.Title,
+		arg.Description,
+		arg.ScheduledStartTime,
+		arg.StartTime,
+		arg.EndTime,
+		arg.VotingFreezeTime,
+	)
 	return err
 }
 
