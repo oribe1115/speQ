@@ -14,20 +14,23 @@ defineEmits(['update:title', 'update:description', 'delete'])
 </script>
 
 <template>
-  <div class="d-flex align-center" style="column-gap: 16px">
-    {{ prependText }}
-    <v-form>
-      <v-text-field
-        v-model="currentTitle"
-        @update:model-value="$emit('update:title', currentTitle)"
-      >
-      </v-text-field>
-      <v-textarea
-        v-model="currentDescription"
-        @update:model-value="$emit('update:description', currentDescription)"
-      ></v-textarea>
-    </v-form>
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-space-between">
+      <div class="d-flex align-content-center">
+        <div style="width: 2rem; font-size: large">{{ prependText }}</div>
+        <v-text-field
+          v-model="currentTitle"
+          @update:model-value="$emit('update:title', currentTitle)"
+        >
+        </v-text-field>
+      </div>
+      <v-btn icon="mdi-close" color="red" @click="$emit('delete')"></v-btn>
+    </div>
 
-    <v-btn icon="mdi-close" color="red" class="mb-4" @click="$emit('delete')"></v-btn>
+    <v-textarea
+      v-model="currentDescription"
+      @update:model-value="$emit('update:description', currentDescription)"
+      class="ml-8"
+    ></v-textarea>
   </div>
 </template>
