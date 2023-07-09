@@ -13,10 +13,10 @@ CREATE TABLE `contest_info`
 (
     `title`                VARCHAR(30) PRIMARY KEY,
     `description`          TEXT,
-    `scheduled_start_time` TIMESTAMP,
-    `start_time`           TIMESTAMP,
-    `end_time`             TIMESTAMP,
-    `voting_freeze_time`   TIMESTAMP
+    `scheduled_start_time` TIMESTAMP NULL DEFAULT NULL,
+    `start_time`           TIMESTAMP NULL DEFAULT NULL,
+    `end_time`             TIMESTAMP NULL DEFAULT NULL,
+    `voting_freeze_time`   TIMESTAMP NULL DEFAULT NULL
 );
 
 CREATE TABLE `contestants`
