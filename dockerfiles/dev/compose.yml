@@ -26,13 +26,15 @@ services:
       DB_PASSWORD: password
       DB_HOSTNAME: mariadb
       DB_PORT: 3306
-      DB_DATABASE: main
+      DB_DATABASE: speq
 
   mariadb:
     image: mariadb:10.7.3
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: main
+      MYSQL_DATABASE: speq
+    expose:
+      - 3306
     ports:
       - 3306:3306
     volumes:

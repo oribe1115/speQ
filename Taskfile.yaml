@@ -8,6 +8,9 @@ tasks:
   dev-up:
     desc: Run a dev environment with docker compose.
     cmd: docker compose -f dockerfiles/dev/compose.yml up --build
+  dev-down:
+    desc: Remove a dev environment with docker compose.
+    cmd: docker compose -f dockerfiles/dev/compose.yml down
     ignore_error: true
   openapi-codegen:
     desc: Generate codes from openapi.yaml
