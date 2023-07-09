@@ -48,6 +48,15 @@ func (q *Queries) CountRowAsRoot(ctx context.Context, trapID string) (int64, err
 	return count, err
 }
 
+const deleteAllAdminUsers = `-- name: DeleteAllAdminUsers :exec
+TRUNCATE ` + "`" + `admins` + "`" + `
+`
+
+func (q *Queries) DeleteAllAdminUsers(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteAllAdminUsers)
+	return err
+}
+
 const deleteAllContestInfo = `-- name: DeleteAllContestInfo :exec
 TRUNCATE ` + "`" + `contest_info` + "`" + `
 `

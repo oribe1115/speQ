@@ -38,8 +38,25 @@ func (r *Router) GetMe(c echo.Context) error {
 }
 
 func (r *Router) PutAdminUsers(c echo.Context) error {
-	//TODO implement me
-	panic("implement me")
+	_, httpErr := r.requireRootOrAdmin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	req := &api.PutAdminUsersJSONRequestBody{}
+	err := c.Bind(req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	ctx := context.Background()
+	newAdmins, err := r.services.RegisterAdminUsers(ctx, *req)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to update admin users: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.JSON(http.StatusOK, newAdmins)
 }
 
 func (r *Router) GetAdmins(c echo.Context) error {

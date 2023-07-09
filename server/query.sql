@@ -17,6 +17,9 @@ SELECT * FROM `roots`;
 INSERT INTO `admins` (`trap_id`)
 VALUES (?);
 
+-- name: DeleteAllAdminUsers :exec
+TRUNCATE `admins`;
+
 -- name: CountRowAsAdmin :one
 SELECT COUNT(*)
 FROM `admins`
