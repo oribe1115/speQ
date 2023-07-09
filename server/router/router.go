@@ -12,3 +12,7 @@ type Router struct {
 var (
 	_ api.ServerInterface = &Router{}
 )
+
+func NewRouter(queries *model.Queries) *Router {
+	return &Router{queries: queries}
+}

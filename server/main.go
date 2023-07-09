@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/labstack/echo/v4/middleware"
 	"log"
-	"net/http"
 	"os"
+	"speQ/generated/api"
 	"speQ/generated/model"
+	"speQ/router"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
@@ -21,13 +23,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_ = model.New(db)
+	queries := model.New(db)
+	routerInstance := router.NewRouter(queries)
 
 	e := echo.New()
+	e.Use(middleware.Logger())
+
 	e.GET("/api/metrics", echo.WrapHandler(promhttp.Handler()))
-	e.GET("/api/test", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, c.Request().Header)
-	})
+
+	apiInstance := e.Group("/api")
+	api.RegisterHandlers(apiInstance, routerInstance)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
