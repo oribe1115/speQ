@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.25.1-alpine
+    ports:
+      - 80:80
+      - 4010:80
+    volumes:
+      - ../../config/nginx/dev-server.conf:/etc/nginx/conf.d/default.conf:ro
+  server:
+    build:
+      context: ../..
+      dockerfile: dockerfiles/dev/server.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ../../server:/github.com/oribe1115/server/speQ
+    command: air -c /github.com/oribe1115/server/speQ/.air.toml
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ../../config/prometheus/dev-prometheus.conf:/etc/prometheus/prometheus.yml:ro
+  grafana:
+    image: grafana/grafana-enterprise:10.0.1
+    ports:
+      - 3001:3000
+    volumes:
+      - ../../dev-data/grafana/grafana_data:/var/lib/grafana
