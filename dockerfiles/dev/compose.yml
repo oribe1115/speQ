@@ -8,6 +8,7 @@ services:
       - 4010:80
     volumes:
       - ../../config/nginx/dev-server.conf:/etc/nginx/conf.d/default.conf:ro
+
   server:
     build:
       context: ../..
@@ -17,12 +18,38 @@ services:
     volumes:
       - ../../server:/github.com/oribe1115/server/speQ
     command: air -c /github.com/oribe1115/server/speQ/.air.toml
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      DB_HOSTNAME: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: main
+
+  mariadb:
+    image: mariadb:10.7.3
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: main
+    ports:
+      - 3306:3306
+    volumes:
+      - "../../schema/db/schema.sql:/docker-entrypoint-initdb.d/init.sql"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 1s
+      timeout: 10s
+      retries: 60
+
   prometheus:
     image: prom/prometheus:v2.45.0
     ports:
       - 9090:9090
     volumes:
       - ../../config/prometheus/dev-prometheus.conf:/etc/prometheus/prometheus.yml:ro
+
   grafana:
     image: grafana/grafana-enterprise:10.0.1
     ports:
