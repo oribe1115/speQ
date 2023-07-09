@@ -1,0 +1,11 @@
+[providers]
+  [providers.docker]
+    exposedByDefault = false
+
+[api]
+  dashboard = true
+  insecure = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
