@@ -8,6 +8,7 @@ tasks:
   dev-up:
     desc: Run a dev environment with docker compose.
     cmd: docker compose -f dockerfiles/dev/compose.yml up --build
+    ignore_error: true
   dev-down:
     desc: Remove a dev environment with docker compose.
     cmd: docker compose -f dockerfiles/dev/compose.yml down
