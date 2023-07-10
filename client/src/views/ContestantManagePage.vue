@@ -7,7 +7,12 @@ import TrapIdListInputForm from '@/components/TrapIdListInputForm.vue'
 
 const contestants = ref<traPId[] | undefined>()
 
-apiClient.user.getContestants().then((res) => (contestants.value = res))
+apiClient.user.getContestants().then((res) => {
+  if (res === null) {
+    res = []
+  }
+  contestants.value = res
+})
 
 const submit = (ids: traPId[]) => {
   apiClient.adminOnly.putContestants(ids)
