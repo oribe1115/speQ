@@ -10,3 +10,5 @@ RUN envsubst < prometheus.yml.template > prometheus.yml
 FROM prom/prometheus:v2.45.0
 
 COPY --from=templete-build /template/prometheus.yml  /etc/prometheus/prometheus.yml
+
+EXPOSE 9090
