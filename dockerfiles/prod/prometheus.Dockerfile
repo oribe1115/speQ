@@ -2,6 +2,8 @@ FROM alpine:3.18.2 as templete-build
 
 WORKDIR /template
 
+ARG SERVER_HOST
+
 RUN echo $SERVER_HOST
 RUN export SERVER_HOST
 
