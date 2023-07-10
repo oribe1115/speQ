@@ -21,4 +21,4 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: /api/metrics
     static_configs:
-      - targets: ['${SERVER_HOST}']
+      - targets: ['$SERVER_HOST']

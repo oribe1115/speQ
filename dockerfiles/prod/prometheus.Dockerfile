@@ -2,6 +2,9 @@ FROM alpine:3.18.2 as templete-build
 
 WORKDIR /template
 
+RUN echo $SERVER_HOST
+RUN export SERVER_HOST
+
 RUN apk add gettext
 COPY config/prometheus/prometheus.yml.template .
 RUN envsubst < prometheus.yml.template > prometheus.yml
