@@ -5,7 +5,7 @@ import apiClient from '@/apis'
 import { traPId } from '@/apis/generated'
 import TrapIdListInputForm from '@/components/TrapIdListInputForm.vue'
 
-const contestants = ref<traPId[]>([])
+const contestants = ref<traPId[] | undefined>()
 
 apiClient.user.getContestants().then((res) => (contestants.value = res))
 
@@ -19,7 +19,9 @@ const submit = (ids: traPId[]) => {
     <v-card-title> 競技者 </v-card-title>
 
     <v-card-text>
-      <TrapIdListInputForm :initial-list="contestants" :submit-func="submit" />
+      <v-lazy :model-value="contestants !== undefined" v-if="contestants">
+        <TrapIdListInputForm :initial-list="contestants" :submit-func="submit" />
+      </v-lazy>
     </v-card-text>
   </v-card>
 </template>
