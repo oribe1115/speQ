@@ -1,4 +1,4 @@
-FROM node:18.16-alpine3.18 as client-build
+FROM node:18.16-alpine3.18
 
 WORKDIR /app
 

@@ -1,4 +1,4 @@
-FROM golang:1.20.5-alpine3.18 as server-build
+FROM golang:1.20.5-alpine3.18
 
 WORKDIR /github.com/oribe1115/server/speQ
 
