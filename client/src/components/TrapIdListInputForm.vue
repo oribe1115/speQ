@@ -32,7 +32,7 @@ const clickOnSave = () => {
 
 <template>
   <div class="d-flex flex-column">
-    <v-list>
+    <v-list :key="trapIds.length">
       <v-list-item v-for="(_id, i) in trapIds" :key="i">
         <TrapIdInputForm v-model:trap-id="trapIds[i]" @delete="removeTrapId" />
       </v-list-item>
