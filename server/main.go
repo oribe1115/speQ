@@ -7,11 +7,11 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4/middleware"
 	"log"
-	"os"
 	"speQ/generated/api"
 	"speQ/generated/model"
 	"speQ/router"
 	"speQ/service"
+	"speQ/util"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -26,10 +26,10 @@ func main() {
 	}
 
 	dbConfig := mysql.Config{
-		User:                 os.Getenv("DB_USERNAME"),
-		Passwd:               os.Getenv("DB_PASSWORD"),
-		Addr:                 fmt.Sprintf("%s:%s", os.Getenv("DB_HOSTNAME"), os.Getenv("DB_PORT")),
-		DBName:               os.Getenv("DB_DATABASE"),
+		User:                 util.ReadEnvs("NS_MARIADB_USER", "DB_USERNAME"),
+		Passwd:               util.ReadEnvs("NS_MARIADB_PASSWORD", "DB_PASSWORD"),
+		Addr:                 fmt.Sprintf("%s:%s", util.ReadEnvs("NS_MARIADB_HOSTNAME", "DB_HOSTNAME"), util.ReadEnvs("NS_MARIADB_PORT", "DB_PORT")),
+		DBName:               util.ReadEnvs("NS_MARIADB_DATABASE", "DB_DATABASE"),
 		Net:                  "tcp",
 		ParseTime:            true,
 		Collation:            "utf8mb4_unicode_ci",

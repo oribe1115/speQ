@@ -21,3 +21,13 @@ tasks:
   sqlc-gen:
     desc: Generate Go codes with sqlc.
     cmd: cd server && sqlc generate
+
+  
+  prod-test-up:
+    desc: Run a prod environment with docker compose.
+    cmd: docker compose -f dockerfiles/prod/compose.yml up --build
+    ignore_error: true
+  prod-test-down:
+    desc: Remove a prod environment with docker compose.
+    cmd: docker compose -f dockerfiles/prod/compose.yml down
+    ignore_error: true

@@ -10,7 +10,12 @@ const rootUsers = ref<traPId[]>([])
 const adminUsers = ref<traPId[] | undefined>()
 
 apiClient.user.getRootUsers().then((res) => (rootUsers.value = [res]))
-apiClient.user.getAdmins().then((res) => (adminUsers.value = res))
+apiClient.user.getAdmins().then((res) => {
+  if (res === null) {
+    res = []
+  }
+  adminUsers.value = res
+})
 
 const submit = (ids: traPId[]) => {
   apiClient.adminOnly.putAdminUsers(ids)
