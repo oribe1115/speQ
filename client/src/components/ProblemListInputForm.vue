@@ -40,7 +40,7 @@ const correctIds = () => {
 
 <template>
   <div class="d-flex flex-column">
-    <v-list>
+    <v-list :key="problems.length">
       <v-list-item v-for="(_text, i) in problems" :key="i">
         <ProblemInputForm
           v-model:title="problems[i].title"
