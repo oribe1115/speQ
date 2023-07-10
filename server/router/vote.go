@@ -3,16 +3,17 @@ package router
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"speQ/generated/api"
+
 	"github.com/labstack/echo/v4"
 	"golang.org/x/exp/slices"
 	"golang.org/x/exp/slog"
-	"net/http"
-	"speQ/generated/api"
 )
 
 func (r *Router) GetVote(c echo.Context) error {
 	//TODO implement me
-	panic("implement me")
+	return echo.ErrNotImplemented
 }
 
 func (r *Router) PostVote(c echo.Context) error {
