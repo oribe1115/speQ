@@ -9,6 +9,9 @@ import UserIcon from '@/components/UserIcon.vue'
 const rootUsers = ref<traPId[]>([])
 const adminUsers = ref<traPId[] | undefined>()
 
+const showSuccessToast = ref<boolean>(false)
+const timeout = ref(3000)
+
 apiClient.user.getRootUsers().then((res) => (rootUsers.value = [res]))
 apiClient.user.getAdmins().then((res) => {
   if (res === null) {
@@ -18,7 +21,7 @@ apiClient.user.getAdmins().then((res) => {
 })
 
 const submit = (ids: traPId[]) => {
-  apiClient.adminOnly.putAdminUsers(ids)
+  apiClient.adminOnly.putAdminUsers(ids).then(() => (showSuccessToast.value = true))
 }
 </script>
 
@@ -42,4 +45,6 @@ const submit = (ids: traPId[]) => {
       </v-lazy>
     </v-card-text>
   </v-card>
+
+  <v-snackbar v-model="showSuccessToast" :timeout="timeout" color="green"> Success! </v-snackbar>
 </template>
