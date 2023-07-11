@@ -6,6 +6,8 @@ import { traPId } from '@/apis/generated'
 import TrapIdListInputForm from '@/components/TrapIdListInputForm.vue'
 
 const contestants = ref<traPId[] | undefined>()
+const showSuccessToast = ref<boolean>(false)
+const timeout = ref(3000)
 
 apiClient.user.getContestants().then((res) => {
   if (res === null) {
@@ -15,7 +17,7 @@ apiClient.user.getContestants().then((res) => {
 })
 
 const submit = (ids: traPId[]) => {
-  apiClient.adminOnly.putContestants(ids)
+  apiClient.adminOnly.putContestants(ids).then(() => (showSuccessToast.value = true))
 }
 </script>
 
@@ -29,4 +31,6 @@ const submit = (ids: traPId[]) => {
       </v-lazy>
     </v-card-text>
   </v-card>
+
+  <v-snackbar v-model="showSuccessToast" :timeout="timeout" color="green"> Success! </v-snackbar>
 </template>

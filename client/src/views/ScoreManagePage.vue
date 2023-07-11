@@ -13,6 +13,8 @@ const { contestants } = storeToRefs(useContestantsStore())
 
 const targetContestant = ref<traPId>('')
 const score = ref<string>()
+const showSuccessToast = ref<boolean>(false)
+const timeout = ref(3000)
 
 const disabled = computed(() => targetContestant.value === '' || score.value === undefined)
 
@@ -24,7 +26,7 @@ const clickOnSave = () => {
     contestantId: targetContestant.value,
     score: Number(score.value)
   }
-  apiClient.adminOnly.postScore(req).then()
+  apiClient.adminOnly.postScore(req).then(() => (showSuccessToast.value = true))
 }
 
 fetchContestants()
@@ -44,4 +46,6 @@ fetchContestants()
       <v-btn @click="clickOnSave" :disabled="disabled" class="align-self-center">Update</v-btn>
     </v-card-actions>
   </v-card>
+
+  <v-snackbar v-model="showSuccessToast" :timeout="timeout" color="green"> Success! </v-snackbar>
 </template>

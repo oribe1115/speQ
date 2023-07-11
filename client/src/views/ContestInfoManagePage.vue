@@ -7,8 +7,11 @@ import { ContestInfo } from '@/apis/generated'
 const contestInfo = ref<ContestInfo>({})
 const sampleDateText = '2023-04-01T14:15:22+09:00'
 
+const showSuccessToast = ref<boolean>(false)
+const timeout = ref(3000)
+
 const clickOnSave = () => {
-  apiClient.adminOnly.putContestInfo(contestInfo.value)
+  apiClient.adminOnly.putContestInfo(contestInfo.value).then(() => (showSuccessToast.value = true))
 }
 
 apiClient.contest.getContestInfo().then((res) => (contestInfo.value = res))
@@ -85,4 +88,6 @@ apiClient.contest.getContestInfo().then((res) => (contestInfo.value = res))
       <v-btn @click="clickOnSave" class="align-self-center">Save</v-btn>
     </v-card-actions>
   </v-card>
+
+  <v-snackbar v-model="showSuccessToast" :timeout="timeout" color="green"> Success! </v-snackbar>
 </template>

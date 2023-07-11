@@ -14,18 +14,26 @@ const { contestants } = storeToRefs(useContestantsStore())
 const targetContestant = ref<traPId>()
 const tripleVote = ref<TripleVote>()
 
+const showSuccessToast = ref<boolean>(false)
+const timeout = ref(3000)
+
 const submitTargetContestant = () => {
   if (targetContestant.value === '') {
     return
   }
 
-  apiClient.vote.postVote(targetContestant.value).then((res) => (targetContestant.value = res))
+  apiClient.vote.postVote(targetContestant.value).then((res) => {
+    showSuccessToast.value = true
+    targetContestant.value = res
+  })
 }
 
 const submitVoteDisabled = computed(() => targetContestant.value === '')
 
 const submitTripleVote = () => {
-  apiClient.vote.postVoteTriple(tripleVote.value).then()
+  apiClient.vote.postVoteTriple(tripleVote.value).then(() => {
+    showSuccessToast.value = true
+  })
 }
 const tripleVoteSubmitDisable = computed(
   () =>
@@ -83,4 +91,6 @@ fetchContestants()
       <v-btn :onclick="submitTripleVote" :disabled="tripleVoteSubmitDisable">Submit</v-btn>
     </v-card-actions>
   </v-card>
+
+  <v-snackbar v-model="showSuccessToast" :timeout="timeout" color="green"> Success! </v-snackbar>
 </template>
