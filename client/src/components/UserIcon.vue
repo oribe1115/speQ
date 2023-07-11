@@ -18,7 +18,7 @@ const iconUrl = computed(() => genIconUrl(props.trapId ?? ''))
 </script>
 
 <template>
-  <v-avatar>
+  <v-avatar style="background-color: white">
     <v-img v-if="showIcon" :src="iconUrl"> </v-img>
   </v-avatar>
 </template>
