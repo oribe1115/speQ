@@ -76,4 +76,27 @@ func (r *Router) PostVoteTriple(c echo.Context) error {
 		return echo.ErrInternalServerError
 	}
 
+	if !slices.Contains(contestants, req.First) {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("`%s` is not contestant", req.First))
+	}
+	if !slices.Contains(contestants, req.Second) {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("`%s` is not contestant", req.Second))
+	}
+	if !slices.Contains(contestants, req.Third) {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("`%s` is not contestant", req.Third))
+	}
+
+	orderToTarget := map[int]string{
+		1: req.First,
+		2: req.Second,
+		3: req.Third,
+	}
+
+	err = r.services.CreateNewTripleVote(ctx, traPID, orderToTarget)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to create new triple vote: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.NoContent(http.StatusOK)
 }

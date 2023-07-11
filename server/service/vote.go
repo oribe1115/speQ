@@ -74,3 +74,37 @@ func (s *Services) SetupVoteCountMetrics(ctx context.Context) error {
 
 	return nil
 }
+
+func (s *Services) CreateNewTripleVote(ctx context.Context, voter string, orderToTarget map[int]string) error {
+	tx, err := s.db.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to start transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	txQueries := s.queries.WithTx(tx)
+
+	err = txQueries.DeleteTripleVotesByVoter(ctx, voter)
+	if err != nil {
+		return err
+	}
+
+	for order, target := range orderToTarget {
+		arg := model.InsertTripleVoteElementParams{
+			Voter:  voter,
+			Order:  int32(order),
+			Target: target,
+		}
+		err = txQueries.InsertTripleVoteElement(ctx, arg)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
