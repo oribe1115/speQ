@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { traPId } from '../models/traPId';
+import type { TripleVote } from '../models/TripleVote';
 import type { VoteStatsItem } from '../models/VoteStatsItem';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -49,11 +50,7 @@ export class VoteService {
      * @throws ApiError
      */
     public postVoteTriple(
-        requestBody?: {
-            first: traPId;
-            second: traPId;
-            third: traPId;
-        },
+        requestBody?: TripleVote,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',

@@ -231,6 +231,26 @@ func (q *Queries) GetLatestScores(ctx context.Context) ([]Score, error) {
 	return items, nil
 }
 
+const getLatestVoteByVoter = `-- name: GetLatestVoteByVoter :one
+SELECT id, voter, target, created_at
+FROM ` + "`" + `votes` + "`" + `
+WHERE ` + "`" + `voter` + "`" + ` = ?
+ORDER BY ` + "`" + `created_at` + "`" + ` DESC
+LIMIT 1
+`
+
+func (q *Queries) GetLatestVoteByVoter(ctx context.Context, voter string) (Vote, error) {
+	row := q.db.QueryRowContext(ctx, getLatestVoteByVoter, voter)
+	var i Vote
+	err := row.Scan(
+		&i.ID,
+		&i.Voter,
+		&i.Target,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getLatestVotes = `-- name: GetLatestVotes :many
 SELECT id, voter, target, created_at
 FROM ` + "`" + `votes` + "`" + ` AS ` + "`" + `main` + "`" + `
@@ -287,6 +307,44 @@ func (q *Queries) GetRootUsers(ctx context.Context) ([]string, error) {
 			return nil, err
 		}
 		items = append(items, trap_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getTripleVotesByVoter = `-- name: GetTripleVotesByVoter :many
+SELECT id, voter, ` + "`" + `order` + "`" + `, target, created_at, is_deleted
+FROM ` + "`" + `triple_votes` + "`" + `
+WHERE ` + "`" + `voter` + "`" + ` = ?
+  AND ` + "`" + `is_deleted` + "`" + ` IS NULL
+ORDER BY ` + "`" + `order` + "`" + `
+`
+
+func (q *Queries) GetTripleVotesByVoter(ctx context.Context, voter string) ([]TripleVote, error) {
+	rows, err := q.db.QueryContext(ctx, getTripleVotesByVoter, voter)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TripleVote
+	for rows.Next() {
+		var i TripleVote
+		if err := rows.Scan(
+			&i.ID,
+			&i.Voter,
+			&i.Order,
+			&i.Target,
+			&i.CreatedAt,
+			&i.IsDeleted,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
 	}
 	if err := rows.Close(); err != nil {
 		return nil, err

@@ -2,6 +2,8 @@ package router
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"speQ/generated/api"
@@ -12,8 +14,22 @@ import (
 )
 
 func (r *Router) GetVote(c echo.Context) error {
-	//TODO implement me
-	return echo.ErrNotImplemented
+	traPID, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	latestVote, err := r.queries.GetLatestVoteByVoter(ctx, traPID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.JSON(http.StatusOK, "")
+		}
+		slog.Error(fmt.Sprintf("failed to GetLatestVoteByVoter: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	return c.JSON(http.StatusOK, latestVote.Target)
 }
 
 func (r *Router) PostVote(c echo.Context) error {
@@ -53,6 +69,34 @@ func (r *Router) PostVote(c echo.Context) error {
 func (r *Router) GetVoteStats(c echo.Context) error {
 	//TODO implement me
 	return echo.ErrNotImplemented
+}
+
+func (r *Router) GetVoteTriple(c echo.Context) error {
+	traPID, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	tripleVotes, err := r.queries.GetTripleVotesByVoter(ctx, traPID)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to GetTripleVotesByVoter: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	res := api.TripleVote{}
+	for _, vote := range tripleVotes {
+		switch vote.Order {
+		case 1:
+			res.First = vote.Target
+		case 2:
+			res.Second = vote.Target
+		case 3:
+			res.Third = vote.Target
+		}
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func (r *Router) PostVoteTriple(c echo.Context) error {

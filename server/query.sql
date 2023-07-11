@@ -72,6 +72,13 @@ LIMIT 1;
 INSERT INTO `votes` (`voter`, `target`)
 VALUES (?, ?);
 
+-- name: GetLatestVoteByVoter :one
+SELECT *
+FROM `votes`
+WHERE `voter` = ?
+ORDER BY `created_at` DESC
+LIMIT 1;
+
 -- name: GetLatestVotes :many
 SELECT *
 FROM `votes` AS `main`
@@ -102,3 +109,10 @@ WHERE `voter` = ?;
 -- name: InsertTripleVoteElement :exec
 INSERT `triple_votes` (`voter`, `order`, `target`)
 VALUES (?, ?, ?);
+
+-- name: GetTripleVotesByVoter :many
+SELECT *
+FROM `triple_votes`
+WHERE `voter` = ?
+  AND `is_deleted` IS NULL
+ORDER BY `order`;

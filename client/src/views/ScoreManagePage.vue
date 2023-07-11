@@ -14,10 +14,6 @@ const { contestants } = storeToRefs(useContestantsStore())
 const targetContestant = ref<traPId>('')
 const score = ref<string>()
 
-const selected = (value: traPId) => {
-  targetContestant.value = value
-}
-
 const disabled = computed(() => targetContestant.value === '' || score.value === undefined)
 
 const clickOnSave = () => {
@@ -40,7 +36,7 @@ fetchContestants()
     <v-card-subtitle>現在のスコアはダッシュボードから確認してください。</v-card-subtitle>
 
     <v-card-text class="mt-8">
-      <UserSelector :items="contestants" @selected="selected" />
+      <UserSelector :items="contestants" v-model:value="targetContestant" />
       <v-text-field type="number" placeholder="50.134" v-model="score"></v-text-field>
     </v-card-text>
 
