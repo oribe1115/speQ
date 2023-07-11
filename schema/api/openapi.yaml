@@ -319,6 +319,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/TripleVote'
       description: 現在の3連単予想を取得する
+      tags:
+        - vote
   /vote/stats:
     get:
       summary: Your GET endpoint
@@ -473,6 +475,10 @@ components:
       x-stoplight:
         id: eynfm9h7av5sm
       type: object
+      examples:
+        - contestant: traP
+          voters:
+            - traP
       properties:
         contestant:
           $ref: '#/components/schemas/traPId'
@@ -486,10 +492,9 @@ components:
             $ref: '#/components/schemas/traPId'
             x-stoplight:
               id: ong6hfq3dqnx3
-      examples:
-        - contestant: traP
-          voters:
-            - traP
+      required:
+        - contestant
+        - voters
     TripleVote:
       title: TripleVote
       x-stoplight:
