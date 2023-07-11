@@ -299,24 +299,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                first:
-                  $ref: '#/components/schemas/traPId'
-                  x-stoplight:
-                    id: wqeica09lm32b
-                second:
-                  $ref: '#/components/schemas/traPId'
-                  x-stoplight:
-                    id: v11o9t3wwu7cq
-                third:
-                  $ref: '#/components/schemas/traPId'
-                  x-stoplight:
-                    id: tmz2pr83ewi4a
-              required:
-                - first
-                - second
-                - third
+              $ref: '#/components/schemas/TripleVote'
             examples:
               Example 1:
                 value:
@@ -325,6 +308,17 @@ paths:
                   third: traP
       tags:
         - vote
+    get:
+      summary: ''
+      operationId: getVoteTriple
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripleVote'
+      description: 現在の3連単予想を取得する
   /vote/stats:
     get:
       summary: Your GET endpoint
@@ -496,6 +490,32 @@ components:
         - contestant: traP
           voters:
             - traP
+    TripleVote:
+      title: TripleVote
+      x-stoplight:
+        id: 55yrwfy2lxd3j
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: jj529a8nzbhjw
+        second:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: vdkibplxsi55x
+        third:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: pvbby1drxigy5
+      required:
+        - first
+        - second
+        - third
+      examples:
+        - first: traP
+          second: traP
+          third: traP
   responses: {}
   requestBodies: {}
 x-internal: false
