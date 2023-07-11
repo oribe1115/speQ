@@ -114,5 +114,5 @@ VALUES (?, ?, ?);
 SELECT *
 FROM `triple_votes`
 WHERE `voter` = ?
-  AND NOT `is_deleted` = TRUE
+  AND `is_deleted` IS NULL
 ORDER BY `order`;

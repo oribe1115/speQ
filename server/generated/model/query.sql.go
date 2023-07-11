@@ -321,7 +321,7 @@ const getTripleVotesByVoter = `-- name: GetTripleVotesByVoter :many
 SELECT id, voter, ` + "`" + `order` + "`" + `, target, created_at, is_deleted
 FROM ` + "`" + `triple_votes` + "`" + `
 WHERE ` + "`" + `voter` + "`" + ` = ?
-  AND NOT ` + "`" + `is_deleted` + "`" + ` = TRUE
+  AND ` + "`" + `is_deleted` + "`" + ` IS NULL
 ORDER BY ` + "`" + `order` + "`" + `
 `
 
