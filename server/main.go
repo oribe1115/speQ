@@ -51,6 +51,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = services.SetupVoteCountMetrics(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 
