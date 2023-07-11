@@ -313,6 +313,10 @@ paths:
                   $ref: '#/components/schemas/traPId'
                   x-stoplight:
                     id: tmz2pr83ewi4a
+              required:
+                - first
+                - second
+                - third
             examples:
               Example 1:
                 value:
