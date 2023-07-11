@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"golang.org/x/exp/slog"
 	"speQ/generated/model"
 	"speQ/service/metrics"
 )
@@ -43,6 +44,33 @@ func (s *Services) CreateNewVote(ctx context.Context, voter string, target strin
 		metrics.DecVoteCount(lastVote.Target)
 	}
 	metrics.IncVoteCount(target)
+
+	return nil
+}
+
+func (s *Services) SetupVoteCountMetrics(ctx context.Context) error {
+	contestants, err := s.queries.GetContestants(ctx)
+	if err != nil {
+		return err
+	}
+
+	votesPerContestant := map[string]int{}
+	for _, contestant := range contestants {
+		votesPerContestant[contestant] = 0
+	}
+
+	latestVotes, err := s.queries.GetLatestVotes(ctx)
+	if err != nil {
+		return err
+	}
+
+	for _, vote := range latestVotes {
+		votesPerContestant[vote.Target]++
+	}
+
+	metrics.SetVoteCounts(votesPerContestant)
+
+	slog.Info(fmt.Sprintf("setup current vote counts %v", votesPerContestant))
 
 	return nil
 }

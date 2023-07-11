@@ -71,3 +71,12 @@ LIMIT 1;
 -- name: InsertVote :exec
 INSERT INTO `votes` (`voter`, `target`)
 VALUES (?, ?);
+
+-- name: GetLatestVotes :many
+SELECT *
+FROM `votes` AS `main`
+WHERE `main`.`id` = (SELECT `sub`.`id`
+                     FROM `votes` AS `sub`
+                     WHERE `main`.`voter` = `sub`.`voter`
+                     ORDER BY `sub`.`created_at` DESC
+                     LIMIT 1);

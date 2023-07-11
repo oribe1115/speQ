@@ -26,3 +26,11 @@ func ClearVoteCount(newContestants []string) {
 		voteCountsPerUser.WithLabelValues(contestant).Set(0)
 	}
 }
+
+func SetVoteCounts(votesPerContestant map[string]int) {
+	voteCountsPerUser.Reset()
+
+	for contestant, count := range votesPerContestant {
+		voteCountsPerUser.WithLabelValues(contestant).Set(float64(count))
+	}
+}
