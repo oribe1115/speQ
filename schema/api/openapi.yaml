@@ -287,6 +287,38 @@ paths:
               $ref: '#/components/schemas/ScoreInfo'
       tags:
         - adminOnly
+  /vote/triple:
+    post:
+      summary: ''
+      operationId: postVoteTriple
+      responses:
+        '200':
+          description: OK
+      description: 三連単を投票する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: wqeica09lm32b
+                second:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: v11o9t3wwu7cq
+                third:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: tmz2pr83ewi4a
+            examples:
+              Example 1:
+                value:
+                  first: traP
+                  second: traP
+                  third: traP
 components:
   schemas:
     traPId:
