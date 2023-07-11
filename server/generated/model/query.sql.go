@@ -182,6 +182,44 @@ func (q *Queries) GetLastVote(ctx context.Context, voter string) (Vote, error) {
 	return i, err
 }
 
+const getLatestScores = `-- name: GetLatestScores :many
+SELECT id, contestant_id, score, created_at
+FROM ` + "`" + `scores` + "`" + ` AS ` + "`" + `main` + "`" + `
+WHERE ` + "`" + `main` + "`" + `.` + "`" + `id` + "`" + ` = (SELECT ` + "`" + `sub` + "`" + `.` + "`" + `id` + "`" + `
+                     FROM ` + "`" + `scores` + "`" + ` AS ` + "`" + `sub` + "`" + `
+                     WHERE ` + "`" + `main` + "`" + `.` + "`" + `id` + "`" + ` = ` + "`" + `sub` + "`" + `.` + "`" + `id` + "`" + `
+                     ORDER BY ` + "`" + `sub` + "`" + `.` + "`" + `created_at` + "`" + ` DESC
+                     LIMIT 1)
+`
+
+func (q *Queries) GetLatestScores(ctx context.Context) ([]Score, error) {
+	rows, err := q.db.QueryContext(ctx, getLatestScores)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Score
+	for rows.Next() {
+		var i Score
+		if err := rows.Scan(
+			&i.ID,
+			&i.ContestantID,
+			&i.Score,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getLatestVotes = `-- name: GetLatestVotes :many
 SELECT id, voter, target, created_at
 FROM ` + "`" + `votes` + "`" + ` AS ` + "`" + `main` + "`" + `

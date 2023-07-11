@@ -14,3 +14,11 @@ var scorePerUser = promauto.NewGaugeVec(
 func NewScore(contestant string, score float64) {
 	scorePerUser.WithLabelValues(contestant).Set(score)
 }
+
+func SetScore(scorePerContestant map[string]float64) {
+	scorePerUser.Reset()
+
+	for contestant, score := range scorePerContestant {
+		scorePerUser.WithLabelValues(contestant).Set(score)
+	}
+}
