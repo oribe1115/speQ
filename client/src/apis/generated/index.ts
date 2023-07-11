@@ -14,10 +14,12 @@ export type { ProblemInfo } from './models/ProblemInfo';
 export type { ProblemSolvedInfo } from './models/ProblemSolvedInfo';
 export type { ScoreInfo } from './models/ScoreInfo';
 export type { traPId } from './models/traPId';
+export type { TripleVote } from './models/TripleVote';
 export type { UserInfo } from './models/UserInfo';
 export type { VoteStatsItem } from './models/VoteStatsItem';
 
 export { AdminOnlyService } from './services/AdminOnlyService';
 export { ContestService } from './services/ContestService';
+export { DefaultService } from './services/DefaultService';
 export { UserService } from './services/UserService';
 export { VoteService } from './services/VoteService';
