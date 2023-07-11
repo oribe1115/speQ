@@ -56,6 +56,24 @@ func (r *Router) GetVoteStats(c echo.Context) error {
 }
 
 func (r *Router) PostVoteTriple(c echo.Context) error {
-	//TODO implement me
-	return echo.ErrNotImplemented
+	// TODO: Improve logic
+
+	traPID, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	var req api.PostVoteTripleJSONRequestBody
+	err := c.Bind(&req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	ctx := context.Background()
+	contestants, err := r.queries.GetContestants(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to get contestants: %v", err))
+		return echo.ErrInternalServerError
+	}
+
 }
