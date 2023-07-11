@@ -80,3 +80,7 @@ WHERE `main`.`id` = (SELECT `sub`.`id`
                      WHERE `main`.`voter` = `sub`.`voter`
                      ORDER BY `sub`.`created_at` DESC
                      LIMIT 1);
+
+-- name: InsertScore :exec
+INSERT INTO `scores` (`contestant_id`, `score`)
+VALUES (?, ?);

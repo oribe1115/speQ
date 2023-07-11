@@ -307,6 +307,21 @@ func (q *Queries) InsertRootUser(ctx context.Context, trapID string) error {
 	return err
 }
 
+const insertScore = `-- name: InsertScore :exec
+INSERT INTO ` + "`" + `scores` + "`" + ` (` + "`" + `contestant_id` + "`" + `, ` + "`" + `score` + "`" + `)
+VALUES (?, ?)
+`
+
+type InsertScoreParams struct {
+	ContestantID string
+	Score        float64
+}
+
+func (q *Queries) InsertScore(ctx context.Context, arg InsertScoreParams) error {
+	_, err := q.db.ExecContext(ctx, insertScore, arg.ContestantID, arg.Score)
+	return err
+}
+
 const insertVote = `-- name: InsertVote :exec
 INSERT INTO ` + "`" + `votes` + "`" + ` (` + "`" + `voter` + "`" + `, ` + "`" + `target` + "`" + `)
 VALUES (?, ?)
