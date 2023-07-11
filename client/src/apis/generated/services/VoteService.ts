@@ -50,9 +50,9 @@ export class VoteService {
      */
     public postVoteTriple(
         requestBody?: {
-            first?: traPId;
-            second?: traPId;
-            third?: traPId;
+            first: traPId;
+            second: traPId;
+            third: traPId;
         },
     ): CancelablePromise<any> {
         return this.httpRequest.request({
