@@ -56,8 +56,31 @@ func (r *Router) GetVoteStats(c echo.Context) error {
 }
 
 func (r *Router) GetVoteTriple(c echo.Context) error {
-	//TODO implement me
-	return echo.ErrNotImplemented
+	traPID, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	tripleVotes, err := r.queries.GetTripleVotesByVoter(ctx, traPID)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to GetTripleVotesByVoter: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	res := api.TripleVote{}
+	for _, vote := range tripleVotes {
+		switch vote.Order {
+		case 1:
+			res.First = vote.Target
+		case 2:
+			res.Second = vote.Target
+		case 3:
+			res.Third = vote.Target
+		}
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func (r *Router) PostVoteTriple(c echo.Context) error {

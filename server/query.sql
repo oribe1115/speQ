@@ -102,3 +102,9 @@ WHERE `voter` = ?;
 -- name: InsertTripleVoteElement :exec
 INSERT `triple_votes` (`voter`, `order`, `target`)
 VALUES (?, ?, ?);
+
+-- name: GetTripleVotesByVoter :many
+SELECT * FROM `triple_votes`
+WHERE `voter` = ?
+AND NOT `is_deleted` = TRUE
+ORDER BY `order`;

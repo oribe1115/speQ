@@ -297,6 +297,43 @@ func (q *Queries) GetRootUsers(ctx context.Context) ([]string, error) {
 	return items, nil
 }
 
+const getTripleVotesByVoter = `-- name: GetTripleVotesByVoter :many
+SELECT id, voter, ` + "`" + `order` + "`" + `, target, created_at, is_deleted FROM ` + "`" + `triple_votes` + "`" + `
+WHERE ` + "`" + `voter` + "`" + ` = ?
+AND NOT ` + "`" + `is_deleted` + "`" + ` = TRUE
+ORDER BY ` + "`" + `order` + "`" + `
+`
+
+func (q *Queries) GetTripleVotesByVoter(ctx context.Context, voter string) ([]TripleVote, error) {
+	rows, err := q.db.QueryContext(ctx, getTripleVotesByVoter, voter)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TripleVote
+	for rows.Next() {
+		var i TripleVote
+		if err := rows.Scan(
+			&i.ID,
+			&i.Voter,
+			&i.Order,
+			&i.Target,
+			&i.CreatedAt,
+			&i.IsDeleted,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const insertAdminUser = `-- name: InsertAdminUser :exec
 INSERT INTO ` + "`" + `admins` + "`" + ` (` + "`" + `trap_id` + "`" + `)
 VALUES (?)
