@@ -48,6 +48,15 @@ type Solved struct {
 	CreatedAt    sql.NullTime
 }
 
+type TripleVote struct {
+	ID        int32
+	Voter     string
+	Order     int32
+	Target    string
+	CreatedAt sql.NullTime
+	IsDeleted sql.NullBool
+}
+
 type Vote struct {
 	ID        int32
 	Voter     string

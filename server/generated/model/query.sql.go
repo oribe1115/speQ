@@ -86,6 +86,17 @@ func (q *Queries) DeleteAllRootUsers(ctx context.Context) error {
 	return err
 }
 
+const deleteTripleVotesByVoter = `-- name: DeleteTripleVotesByVoter :exec
+UPDATE ` + "`" + `triple_votes` + "`" + `
+SET ` + "`" + `is_deleted` + "`" + ` = TRUE
+WHERE ` + "`" + `voter` + "`" + ` = ?
+`
+
+func (q *Queries) DeleteTripleVotesByVoter(ctx context.Context, voter string) error {
+	_, err := q.db.ExecContext(ctx, deleteTripleVotesByVoter, voter)
+	return err
+}
+
 const getAdminUsers = `-- name: GetAdminUsers :many
 SELECT trap_id
 FROM ` + "`" + `admins` + "`" + `
@@ -357,6 +368,22 @@ type InsertScoreParams struct {
 
 func (q *Queries) InsertScore(ctx context.Context, arg InsertScoreParams) error {
 	_, err := q.db.ExecContext(ctx, insertScore, arg.ContestantID, arg.Score)
+	return err
+}
+
+const insertTripleVoteElement = `-- name: InsertTripleVoteElement :exec
+INSERT ` + "`" + `triple_votes` + "`" + ` (` + "`" + `voter` + "`" + `, ` + "`" + `order` + "`" + `, ` + "`" + `target` + "`" + `)
+VALUES (?, ?, ?)
+`
+
+type InsertTripleVoteElementParams struct {
+	Voter  string
+	Order  int32
+	Target string
+}
+
+func (q *Queries) InsertTripleVoteElement(ctx context.Context, arg InsertTripleVoteElementParams) error {
+	_, err := q.db.ExecContext(ctx, insertTripleVoteElement, arg.Voter, arg.Order, arg.Target)
 	return err
 }
 

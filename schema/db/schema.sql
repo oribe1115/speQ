@@ -33,6 +33,17 @@ CREATE TABLE `votes`
     FOREIGN KEY `vote_contestant` (`target`) REFERENCES `contestants` (`trap_id`) ON DELETE CASCADE
 );
 
+CREATE TABLE `triple_votes`
+(
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `voter`      VARCHAR(32) NOT NULL,
+    `order`      INT         NOT NULL,
+    `target`     VARCHAR(32) NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `is_deleted` BOOLEAN,
+    FOREIGN KEY `triple_vote_contestant` (`target`) REFERENCES `contestants` (`trap_id`) ON DELETE CASCADE
+);
+
 CREATE TABLE `problems`
 (
     `id`          INT PRIMARY KEY, # Also used to specify the display order.

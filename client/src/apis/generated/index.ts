@@ -15,6 +15,7 @@ export type { ProblemSolvedInfo } from './models/ProblemSolvedInfo';
 export type { ScoreInfo } from './models/ScoreInfo';
 export type { traPId } from './models/traPId';
 export type { UserInfo } from './models/UserInfo';
+export type { VoteStatsItem } from './models/VoteStatsItem';
 
 export { AdminOnlyService } from './services/AdminOnlyService';
 export { ContestService } from './services/ContestService';

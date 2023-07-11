@@ -93,3 +93,12 @@ WHERE `main`.`id` = (SELECT `sub`.`id`
                      WHERE `main`.`id` = `sub`.`id`
                      ORDER BY `sub`.`created_at` DESC
                      LIMIT 1);
+
+-- name: DeleteTripleVotesByVoter :exec
+UPDATE `triple_votes`
+SET `is_deleted` = TRUE
+WHERE `voter` = ?;
+
+-- name: InsertTripleVoteElement :exec
+INSERT `triple_votes` (`voter`, `order`, `target`)
+VALUES (?, ?, ?);

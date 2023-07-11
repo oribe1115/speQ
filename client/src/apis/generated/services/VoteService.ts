@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { traPId } from '../models/traPId';
+import type { VoteStatsItem } from '../models/VoteStatsItem';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -38,6 +39,40 @@ export class VoteService {
             url: '/vote',
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * 三連単を投票する
+     * @param requestBody
+     * @returns any OK
+     * @throws ApiError
+     */
+    public postVoteTriple(
+        requestBody?: {
+            first: traPId;
+            second: traPId;
+            third: traPId;
+        },
+    ): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/vote/triple',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Your GET endpoint
+     * 1位予想の統計情報
+     * @returns VoteStatsItem OK
+     * @throws ApiError
+     */
+    public getVoteStats(): CancelablePromise<Array<VoteStatsItem>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/vote/stats',
         });
     }
 

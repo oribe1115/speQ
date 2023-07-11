@@ -16,7 +16,7 @@ type ListItem = {
 
 const internalLinks: ListItem[] = [
   {
-    text: '投票する',
+    text: '予想する',
     linkTo: RouteName.Vote
   }
 ]
