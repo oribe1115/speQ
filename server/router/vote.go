@@ -19,7 +19,7 @@ func (r *Router) GetVote(c echo.Context) error {
 func (r *Router) PostVote(c echo.Context) error {
 	// TODO: Improve logic
 
-	traPID, httpErr := r.requireRootOrAdmin(c)
+	traPID, httpErr := requireLogin(c)
 	if httpErr != nil {
 		return httpErr
 	}
