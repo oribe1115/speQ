@@ -35,7 +35,7 @@ const tripleVoteSubmitDisable = computed(
 )
 
 apiClient.vote.getVote().then((res) => (targetContestant.value = res))
-apiClient.default.getVoteTriple().then((res) => (tripleVote.value = res))
+apiClient.vote.getVoteTriple().then((res) => (tripleVote.value = res))
 fetchContestants()
 </script>
 
@@ -44,7 +44,7 @@ fetchContestants()
     <v-card-title>1位予想</v-card-title>
 
     <v-card-text class="d-flex flex-column mt-4">
-      <v-lazy :model-value="targetContestant !== undefined" v-if="targetContestant">
+      <v-lazy :model-value="targetContestant !== undefined" v-if="targetContestant !== undefined">
         <UserSelector :items="contestants" v-model:value="targetContestant" />
       </v-lazy>
     </v-card-text>

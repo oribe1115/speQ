@@ -67,8 +67,43 @@ func (r *Router) PostVote(c echo.Context) error {
 }
 
 func (r *Router) GetVoteStats(c echo.Context) error {
-	//TODO implement me
-	return echo.ErrNotImplemented
+	_, httpErr := requireLogin(c)
+	if httpErr != nil {
+		return httpErr
+	}
+
+	ctx := context.Background()
+	latestVotes, err := r.queries.GetLatestVotes(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to GetLatestVotes: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	votersMap := map[string][]string{}
+	for _, vote := range latestVotes {
+		votersMap[vote.Target] = append(votersMap[vote.Target], vote.Voter)
+	}
+
+	res := make([]api.VoteStatsItem, 0)
+	contestants, err := r.queries.GetContestants(ctx)
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to GetContestants(: %v", err))
+		return echo.ErrInternalServerError
+	}
+
+	for _, contestant := range contestants {
+		voters, ok := votersMap[contestant]
+		if !ok {
+			voters = []string{}
+		}
+		item := api.VoteStatsItem{
+			Contestant: contestant,
+			Voters:     voters,
+		}
+		res = append(res, item)
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func (r *Router) GetVoteTriple(c echo.Context) error {

@@ -61,6 +61,18 @@ export class VoteService {
     }
 
     /**
+     * 現在の3連単予想を取得する
+     * @returns TripleVote OK
+     * @throws ApiError
+     */
+    public getVoteTriple(): CancelablePromise<TripleVote> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/vote/triple',
+        });
+    }
+
+    /**
      * Your GET endpoint
      * 1位予想の統計情報
      * @returns VoteStatsItem OK

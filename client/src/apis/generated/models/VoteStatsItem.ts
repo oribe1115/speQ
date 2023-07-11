@@ -5,7 +5,7 @@
 import type { traPId } from './traPId';
 
 export type VoteStatsItem = {
-    contestant?: traPId;
-    voters?: Array<traPId>;
+    contestant: traPId;
+    voters: Array<traPId>;
 };
 
