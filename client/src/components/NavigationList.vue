@@ -18,6 +18,10 @@ const internalLinks: ListItem[] = [
   {
     text: '予想する',
     linkTo: RouteName.Vote
+  },
+  {
+    text: 'みんなの予想',
+    linkTo: RouteName.VoteStats
   }
 ]
 

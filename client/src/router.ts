@@ -11,10 +11,12 @@ import HomePage from '@/views/HomePage.vue'
 import ProblemManagePage from '@/views/ProblemManagePage.vue'
 import ScoreManagePage from '@/views/ScoreManagePage.vue'
 import VotePage from '@/views/VotePage.vue'
+import VoteStatsPage from '@/views/VoteStatsPage.vue'
 
 export enum RouteName {
   Home = 'home',
   Vote = 'vote',
+  VoteStats = 'vote-stats',
   AdminHome = 'admin',
   AdminManage = 'admin-manage',
   ContestantManage = 'contestant-manage',
@@ -43,6 +45,11 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: RouteName.Vote,
         component: VotePage
+      },
+      {
+        path: 'stats',
+        name: RouteName.VoteStats,
+        component: VoteStatsPage
       }
     ]
   },
