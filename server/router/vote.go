@@ -55,6 +55,11 @@ func (r *Router) GetVoteStats(c echo.Context) error {
 	return echo.ErrNotImplemented
 }
 
+func (r *Router) GetVoteTriple(c echo.Context) error {
+	//TODO implement me
+	return echo.ErrNotImplemented
+}
+
 func (r *Router) PostVoteTriple(c echo.Context) error {
 	// TODO: Improve logic
 
