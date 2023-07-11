@@ -49,3 +49,13 @@ func (r *Router) PostVote(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, req)
 }
+
+func (r *Router) GetVoteStats(c echo.Context) error {
+	//TODO implement me
+	return echo.ErrNotImplemented
+}
+
+func (r *Router) PostVoteTriple(c echo.Context) error {
+	//TODO implement me
+	return echo.ErrNotImplemented
+}
