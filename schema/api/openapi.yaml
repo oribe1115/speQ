@@ -287,6 +287,64 @@ paths:
               $ref: '#/components/schemas/ScoreInfo'
       tags:
         - adminOnly
+  /vote/triple:
+    post:
+      summary: ''
+      operationId: postVoteTriple
+      responses:
+        '200':
+          description: OK
+      description: 三連単を投票する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: wqeica09lm32b
+                second:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: v11o9t3wwu7cq
+                third:
+                  $ref: '#/components/schemas/traPId'
+                  x-stoplight:
+                    id: tmz2pr83ewi4a
+            examples:
+              Example 1:
+                value:
+                  first: traP
+                  second: traP
+                  third: traP
+      tags:
+        - vote
+  /vote/stats:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - vote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoteStatsItem'
+                  x-stoplight:
+                    id: 7015hfqnkxl1i
+              examples:
+                Example 1:
+                  value:
+                    - contestant: traP
+                      voters:
+                        - traP
+      operationId: getVoteStats
+      description: 1位予想の統計情報
 components:
   schemas:
     traPId:
@@ -412,6 +470,28 @@ components:
       required:
         - contestantId
         - score
+    VoteStatsItem:
+      title: VoteStatsItem
+      x-stoplight:
+        id: eynfm9h7av5sm
+      type: object
+      properties:
+        contestant:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: vtcfm81119lu5
+        voters:
+          type: array
+          x-stoplight:
+            id: 9rx9q6gysd8rq
+          items:
+            $ref: '#/components/schemas/traPId'
+            x-stoplight:
+              id: ong6hfq3dqnx3
+      examples:
+        - contestant: traP
+          voters:
+            - traP
   responses: {}
   requestBodies: {}
 x-internal: false
