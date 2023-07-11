@@ -80,3 +80,16 @@ WHERE `main`.`id` = (SELECT `sub`.`id`
                      WHERE `main`.`voter` = `sub`.`voter`
                      ORDER BY `sub`.`created_at` DESC
                      LIMIT 1);
+
+-- name: InsertScore :exec
+INSERT INTO `scores` (`contestant_id`, `score`)
+VALUES (?, ?);
+
+-- name: GetLatestScores :many
+SELECT *
+FROM `scores` AS `main`
+WHERE `main`.`id` = (SELECT `sub`.`id`
+                     FROM `scores` AS `sub`
+                     WHERE `main`.`id` = `sub`.`id`
+                     ORDER BY `sub`.`created_at` DESC
+                     LIMIT 1);

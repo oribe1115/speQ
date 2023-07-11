@@ -55,6 +55,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = services.SetupScoreMetrics(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	e := echo.New()
 	e.Use(middleware.Logger())

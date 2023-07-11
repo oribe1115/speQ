@@ -41,6 +41,10 @@ const adminLinks: ListItem[] = [
   {
     text: '問題情報管理',
     linkTo: RouteName.ProblemMange
+  },
+  {
+    text: 'スコア登録',
+    linkTo: RouteName.ScoreManage
   }
 ]
 </script>
