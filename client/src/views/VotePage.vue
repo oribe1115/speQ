@@ -32,17 +32,23 @@ fetchContestants()
 </script>
 
 <template>
-  <v-card width="100%">
-    <template v-slot:title> 現在の一位予想 </template>
+  <v-card>
+    <v-card-title>1位予想</v-card-title>
 
-    <v-card-text v-if="currentTargetContestant !== ''">
-      <UserIcon :trap-id="currentTargetContestant" />
-      {{ currentTargetContestant }}
+    <v-card-text>
+      <div>
+        <div>現在の1位予想</div>
+        <div v-if="currentTargetContestant !== ''">
+          <UserIcon :trap-id="currentTargetContestant" />
+          {{ currentTargetContestant }}
+        </div>
+        <div v-else>未設定</div>
+      </div>
     </v-card-text>
 
-    <v-card-text v-else> 未設定 </v-card-text>
+    <v-card-actions class="d-flex flex-column">
+      <UserSelector :items="contestants" @selected="selected" class="w-75" />
+      <v-btn :onclick="submitTargetContestant" :disabled="newTargetContestant === ''">Submit</v-btn>
+    </v-card-actions>
   </v-card>
-
-  <UserSelector :items="contestants" @selected="selected" />
-  <v-btn :onclick="submitTargetContestant" :disabled="newTargetContestant === ''">Submit</v-btn>
 </template>
