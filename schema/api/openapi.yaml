@@ -319,6 +319,32 @@ paths:
                   first: traP
                   second: traP
                   third: traP
+      tags:
+        - vote
+  /vote/stats:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - vote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoteStatsItem'
+                  x-stoplight:
+                    id: 7015hfqnkxl1i
+              examples:
+                Example 1:
+                  value:
+                    - contestant: traP
+                      voters:
+                        - traP
+      operationId: getVoteStats
+      description: 1位予想の統計情報
 components:
   schemas:
     traPId:
@@ -444,6 +470,28 @@ components:
       required:
         - contestantId
         - score
+    VoteStatsItem:
+      title: VoteStatsItem
+      x-stoplight:
+        id: eynfm9h7av5sm
+      type: object
+      properties:
+        contestant:
+          $ref: '#/components/schemas/traPId'
+          x-stoplight:
+            id: vtcfm81119lu5
+        voters:
+          type: array
+          x-stoplight:
+            id: 9rx9q6gysd8rq
+          items:
+            $ref: '#/components/schemas/traPId'
+            x-stoplight:
+              id: ong6hfq3dqnx3
+      examples:
+        - contestant: traP
+          voters:
+            - traP
   responses: {}
   requestBodies: {}
 x-internal: false
