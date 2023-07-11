@@ -35,7 +35,7 @@ const tripleVoteSubmitDisable = computed(
 )
 
 apiClient.vote.getVote().then((res) => (targetContestant.value = res))
-apiClient.default.getVoteTriple().then((res) => (tripleVote.value = res))
+apiClient.vote.getVoteTriple().then((res) => (tripleVote.value = res))
 fetchContestants()
 </script>
 

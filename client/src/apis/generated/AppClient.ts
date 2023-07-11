@@ -7,7 +7,6 @@ import { FetchHttpRequest } from './core/FetchHttpRequest';
 
 import { AdminOnlyService } from './services/AdminOnlyService';
 import { ContestService } from './services/ContestService';
-import { DefaultService } from './services/DefaultService';
 import { UserService } from './services/UserService';
 import { VoteService } from './services/VoteService';
 
@@ -17,7 +16,6 @@ export class AppClient {
 
     public readonly adminOnly: AdminOnlyService;
     public readonly contest: ContestService;
-    public readonly default: DefaultService;
     public readonly user: UserService;
     public readonly vote: VoteService;
 
@@ -38,7 +36,6 @@ export class AppClient {
 
         this.adminOnly = new AdminOnlyService(this.request);
         this.contest = new ContestService(this.request);
-        this.default = new DefaultService(this.request);
         this.user = new UserService(this.request);
         this.vote = new VoteService(this.request);
     }

@@ -20,6 +20,5 @@ export type { VoteStatsItem } from './models/VoteStatsItem';
 
 export { AdminOnlyService } from './services/AdminOnlyService';
 export { ContestService } from './services/ContestService';
-export { DefaultService } from './services/DefaultService';
 export { UserService } from './services/UserService';
 export { VoteService } from './services/VoteService';
