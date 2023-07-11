@@ -8,7 +8,11 @@ import UserIconOverlappedList from '@/components/UserIconOverlappedList.vue'
 
 const voteStats = ref<VoteStatsItem[]>()
 
-apiClient.vote.getVoteStats().then((res) => (voteStats.value = res))
+apiClient.vote.getVoteStats().then((res) => (voteStats.value = sort(res)))
+
+const sort = (list: VoteStatsItem[]) => {
+  return list.sort((a, b) => (a.contestant < b.contestant ? -1 : 1))
+}
 </script>
 
 <template>
@@ -20,7 +24,7 @@ apiClient.vote.getVoteStats().then((res) => (voteStats.value = res))
         <v-table>
           <tbody>
             <tr v-for="item in voteStats" :key="item.contestant" style="height: 70px">
-              <td class="w-25">
+              <td style="width: 170px">
                 <UserIcon :trap-id="item.contestant" class="mr-4" />{{ item.contestant }}
               </td>
               <td><UserIconOverlappedList :trap-ids="item.voters" /></td>
