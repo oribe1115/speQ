@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { computed } from 'vue'
 
 import apiClient from '@/apis'
-import { traPId } from '@/apis/generated'
+import { TripleVote, traPId } from '@/apis/generated'
 import UserSelector from '@/components/UserSelector.vue'
 import { useContestantsStore } from '@/store/contestants'
 
@@ -12,10 +12,7 @@ const { fetchContestants } = useContestantsStore()
 const { contestants } = storeToRefs(useContestantsStore())
 
 const targetContestant = ref<traPId>()
-
-const tripleVoteFirst = ref<traPId>()
-const tripleVoteSecond = ref<traPId>()
-const tripleVoteThird = ref<traPId>()
+const tripleVote = ref<TripleVote>()
 
 const submitTargetContestant = () => {
   if (targetContestant.value === '') {
@@ -28,29 +25,17 @@ const submitTargetContestant = () => {
 const submitVoteDisabled = computed(() => targetContestant.value === '')
 
 const submitTripleVote = () => {
-  if (
-    tripleVoteFirst.value === undefined ||
-    tripleVoteSecond.value === undefined ||
-    tripleVoteThird.value === undefined
-  ) {
-    return
-  }
-  apiClient.vote
-    .postVoteTriple({
-      first: tripleVoteFirst.value,
-      second: tripleVoteSecond.value,
-      third: tripleVoteThird.value
-    })
-    .then()
+  apiClient.vote.postVoteTriple(tripleVote.value).then()
 }
 const tripleVoteSubmitDisable = computed(
   () =>
-    tripleVoteFirst.value === undefined ||
-    tripleVoteSecond.value === undefined ||
-    tripleVoteThird.value === undefined
+    tripleVote.value?.first === '' ||
+    tripleVote.value?.second === '' ||
+    tripleVote.value?.third === ''
 )
 
 apiClient.vote.getVote().then((res) => (targetContestant.value = res))
+apiClient.default.getVoteTriple().then((res) => (tripleVote.value = res))
 fetchContestants()
 </script>
 
@@ -74,18 +59,24 @@ fetchContestants()
     <v-card-subtitle>この情報はダッシュボードには反映されません。</v-card-subtitle>
 
     <v-card-text>
-      <div>
-        <div>1位</div>
-        <UserSelector :items="contestants" v-model:value="tripleVoteFirst" />
-      </div>
-      <div>
-        <div>2位</div>
-        <UserSelector :items="contestants" v-model:value="tripleVoteSecond" />
-      </div>
-      <div>
-        <div>3位</div>
-        <UserSelector :items="contestants" v-model:value="tripleVoteThird" />
-      </div>
+      <v-lazy :model-value="tripleVote !== undefined" v-if="tripleVote">
+        <div>
+          <div>1位</div>
+          <UserSelector :items="contestants" v-model:value="tripleVote.first" />
+        </div>
+      </v-lazy>
+      <v-lazy :model-value="tripleVote !== undefined" v-if="tripleVote">
+        <div>
+          <div>2位</div>
+          <UserSelector :items="contestants" v-model:value="tripleVote.second" />
+        </div>
+      </v-lazy>
+      <v-lazy :model-value="tripleVote !== undefined" v-if="tripleVote">
+        <div>
+          <div>3位</div>
+          <UserSelector :items="contestants" v-model:value="tripleVote.third" />
+        </div>
+      </v-lazy>
     </v-card-text>
 
     <v-card-actions class="d-flex flex-column mb-4">
